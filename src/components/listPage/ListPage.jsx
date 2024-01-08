@@ -11,7 +11,7 @@ import ListNav from "./ListNav";
 import axios from "axios";
 import ErrorPage from "../handlers/ErrorPage";
 import LoadingPage from "../handlers/LoadingPage";
-import AddCardIcon from '@mui/icons-material/AddCard';
+import AddCardIcon from "@mui/icons-material/AddCard";
 
 // for now i just put here
 const ApiToken =
@@ -21,6 +21,7 @@ const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 function ListPage() {
   const { id } = useParams();
   const [listData, setListData] = useState();
+  const [boardName, setBoardName] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   console.log(id);
@@ -44,11 +45,20 @@ function ListPage() {
         setIsLoading(false);
         setError(err.message);
       });
+
+    axios(`https://api.trello.com/1/boards/${id}?key=${ApiKey}&token=${ApiToken}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((res) => setBoardName(res.data.name))
+      .catch((err) => console.error(err));
   }, []);
 
   return (
     <div>
-      <ListNav />
+      <ListNav boardName={boardName}/>
       {error !== "" ? (
         <ErrorPage />
       ) : (
@@ -56,22 +66,21 @@ function ListPage() {
           {isLoading ? (
             <LoadingPage />
           ) : (
-            <Container
-              maxWidth="2xl"
-              className="listContainer"
-            >
+            <Container maxWidth="2xl" className="listContainer">
               <div className="displayList">
-              {listData.map(({ id, name }) => (
-                <Card sx={{ minWidth: 275 }} key={id}>
-                  <CardContent className="listCardContent"> <p>{name}</p>
-                  <Button >...</Button>
-                  </CardContent>
-                  <CardActions className="listCardAction">
-                    <Button size="small">+ Add Card</Button>
-                    <AddCardIcon className="addCardIcon"/>
-                  </CardActions> 
-                </Card>
-              ))}
+                {listData.map(({ id, name }) => (
+                  <Card sx={{ minWidth: 275 }} key={id}>
+                    <CardContent className="listCardContent">
+                      {" "}
+                      <p>{name}</p>
+                      <Button>...</Button>
+                    </CardContent>
+                    <CardActions className="listCardAction">
+                      <Button size="small">+ Add Card</Button>
+                      <AddCardIcon className="addCardIcon" />
+                    </CardActions>
+                  </Card>
+                ))}
               </div>
             </Container>
           )}

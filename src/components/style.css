@@ -2,9 +2,7 @@
     margin-top: 5rem;
     margin-bottom: 5rem;
 }
-/* .title{
 
-} */
 
 .board{
     width: 250px;
@@ -25,6 +23,11 @@
     gap: 1rem;
     padding-top: 1rem;
 }
+.listAppToolbar{
+    display: flex;
+    gap: 2rem;
+}
+
 .listContainer{
     min-height: 91vh;
     background-color: #0055CC;
@@ -38,16 +41,16 @@
     margin-top: -1rem;
     margin-right: -1rem;
     /* background-color: aqua; */
-    color: gray;
+    color: rgb(79, 77, 77);;
 }
 
 .listCardAction{
     display: flex;
     justify-content: space-between;
-    color: gray;
+    color: rgb(105, 102, 102);;
 }
 .listCardAction button{
-    color: gray;
+    color: rgb(79, 77, 77);
   
 }
 
