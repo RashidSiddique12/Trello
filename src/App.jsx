@@ -1,14 +1,27 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import DisplayBoards from "./components/boards/DisplayBoards";
 import Header from "./components/headers/Header";
-import './components/style.css'
+import "./components/style.css";
+import ListPage from "./components/listPage/ListPage";
 
 function App() {
   return (
     <>
-      <Header />
-      <DisplayBoards />
-      {/* <h1>HEloo</h1> */}
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <Header />
+                <DisplayBoards />
+              </div>
+            }
+          />
+          <Route path="/board/:id" element={<ListPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

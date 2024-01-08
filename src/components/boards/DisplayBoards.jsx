@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import { Container, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Container, Grid } from "@mui/material";
 import CreateNewBoard from "./CreateNewBoard";
+import axios from "axios";
+import LoadingPage from "../handlers/LoadingPage";
+import ErrorPage from "../handlers/ErrorPage";
+import { Link } from "react-router-dom";
 
+// for now i just put here
 const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
 const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
-
 function DisplayBoards() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   useEffect(() => {
-    fetch(
-      `https://api.trello.com/1/members/me/boards?fields=name,url,prefs&key=${ApiKey}&token=${ApiToken}`,
+    axios(
+      `https://api.trello.com/1/members/me/boards?key=${ApiKey}&token=${ApiToken}`,
       {
         method: "GET",
         headers: {
@@ -22,28 +25,34 @@ function DisplayBoards() {
         },
       }
     )
-      .then((response) => {
-        // console.log(response);
-        return response.json();
-      })
       .then((res) => {
-        // console.log(res);
-        setData(res);
+        console.log(res.data);
+        setData(res.data);
+        setIsLoading(false);
       })
-      .catch((err) => console.error(err));
-  }, []);
-  return (
+      .catch((err) => {
+        setError(err.message);
+      });
+  }, [setData]);
+
+  return error !== "" ? (
+    <ErrorPage />
+  ) : isLoading ? (
+    <LoadingPage />
+  ) : (
     <>
-      <Container className="boardContainer" maxWidth="lg" >
-      <Typography variant="h4" className="title" gutterBottom>Your Works Space</Typography>
+      <Container className="boardContainer" maxWidth="lg">
+        <Typography variant="h4" className="title" gutterBottom>
+          Your Works Space
+        </Typography>
         <Grid container spacing={2}>
-          <Grid item>
-            <CreateNewBoard />
-          </Grid>
+          <Grid item>{<CreateNewBoard data={data} setData={setData} />}</Grid>
           {data &&
             data.map(({ id, name, prefs }) => {
               return (
+                
                 <Grid item key={id}>
+                  <Link to={`/board/${id}`} style={{textDecoration : "none"}}>
                   <Card
                     className="board"
                     sx={{ backgroundColor: prefs["backgroundColor"] }}
@@ -54,7 +63,9 @@ function DisplayBoards() {
                       </Typography>
                     </CardContent>
                   </Card>
+                  </Link>
                 </Grid>
+               
               );
             })}
         </Grid>
