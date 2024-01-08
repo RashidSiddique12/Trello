@@ -1,9 +1,8 @@
-import React from 'react'
 
-function ErrorPage() {
+function ErrorPage({title="Page not Found"}) {
   return (
     <div>
-      <h1>Error</h1>
+      <h1>{title}</h1>
     </div>
   )
 }

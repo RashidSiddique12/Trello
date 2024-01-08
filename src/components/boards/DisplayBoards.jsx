@@ -33,7 +33,7 @@ function DisplayBoards() {
       .catch((err) => {
         setError(err.message);
       });
-  }, [setData]);
+  }, []);
 
   return error !== "" ? (
     <ErrorPage />
@@ -43,7 +43,7 @@ function DisplayBoards() {
     <>
       <Container className="boardContainer" maxWidth="lg">
         <Typography variant="h4" className="title" gutterBottom>
-          Your Works Space
+          Boards
         </Typography>
         <Grid container spacing={2}>
           <Grid item>{<CreateNewBoard data={data} setData={setData} />}</Grid>

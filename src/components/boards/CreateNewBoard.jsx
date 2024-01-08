@@ -42,8 +42,9 @@ function CreateNewBoard({ data, setData }) {
   return (
     <div>
       <Card className="board" id="newBoard" onClick={handleOpen}>
-        <CardContent>
-          <Typography variant="h6">Create a new Board+</Typography>
+        <CardContent id="createCardContent">
+          <Typography variant="subtitle2" >Create a new Board+ </Typography><br />
+          <Typography variant="caption" >remaining : {10 - data.length }</Typography>
         </CardContent>
       </Card>
       <Modal

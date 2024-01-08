@@ -16,7 +16,10 @@
  #backbtn{
     background-color: black;
 }
-
+#createCardContent{
+    padding: 1rem;
+    line-height: 0;
+}
 .displayList{
     display: flex;
     flex-direction: row;
@@ -54,6 +57,20 @@
   
 }
 
+.Cardform{
+    /* background-color: aqua; */
+}
+.Cardform input{
+    width: 90%;
+    padding: 0.5rem;
+    margin-bottom: 0rem;
+    /* display: flex;
+    justify-content: space-between; */
+}
+.Cardform > div{
+    display: flex;
+    justify-content: space-between;
+}
 /* .modalForm{
     position: absolute;
     top: 50%;
