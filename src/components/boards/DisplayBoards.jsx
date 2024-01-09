@@ -46,13 +46,12 @@ function DisplayBoards() {
           Boards
         </Typography>
         <Grid container spacing={2}>
-          <Grid item>{<CreateNewBoard data={data} setData={setData} />}</Grid>
+          <Grid item><CreateNewBoard data={data} setData={setData} /></Grid>
           {data &&
             data.map(({ id, name, prefs }) => {
               return (
-                
                 <Grid item key={id}>
-                  <Link to={`/board/${id}`} style={{textDecoration : "none"}}>
+                  <Link  to={`/board/${id}`} style={{textDecoration : "none"}}>
                   <Card
                     className="board"
                     sx={{ backgroundColor: prefs["backgroundColor"] }}

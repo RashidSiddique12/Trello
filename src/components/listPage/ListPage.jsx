@@ -11,8 +11,10 @@ import ListNav from "./ListNav";
 import axios from "axios";
 import ErrorPage from "../handlers/ErrorPage";
 import LoadingPage from "../handlers/LoadingPage";
-import AddCardIcon from "@mui/icons-material/AddCard";
 import CreateNewList from "./CreateNewList";
+import ListAction from "./ListAction";
+import DisplayCard from "./card/DisplayCard";
+import AddCard from "./card/AddCard";
 
 // for now i just put here
 const ApiToken =
@@ -61,6 +63,23 @@ function ListPage() {
       .catch((err) => console.error(err));
   }, []);
 
+  const handleArchive = (listId) => {
+    axios({
+      method: "PUT",
+      url: `https://api.trello.com/1/lists/${listId}/closed?key=${ApiKey}&token=${ApiToken}`,
+      data: {
+        value: true,
+      },
+    })
+      .then((res) => {
+        // console.log(res.data);
+        setListData(listData.filter((list)=>list.id !== listId))
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <ListNav boardName={boardName} />
@@ -73,18 +92,16 @@ function ListPage() {
           ) : (
             <Container maxWidth="2xl" className="listContainer">
               <div className="displayList">
-                {listData.map(({ id, name }) => (
+                {listData.map(({ id, name}) => (
                   <div key={id}>
                     <Card sx={{ minWidth: 275 }}>
                       <CardContent className="listCardContent">
                         {" "}
                         <p>{name}</p>
-                        <Button>...</Button>
+                       <ListAction handleArchive={handleArchive} listId={id}/>
                       </CardContent>
-                      <CardActions className="listCardAction">
-                        <Button size="small">+ Add Card</Button>
-                        <AddCardIcon className="addCardIcon" />
-                      </CardActions>
+                      <DisplayCard listId={id}/>
+                      
                     </Card>
                   </div>
                 ))}
@@ -106,28 +123,4 @@ function ListPage() {
 
 export default ListPage;
 
-// <Popover
-//                     open={open}
-//                     anchorEl={anchorEl}
-//                     onClose={handleClose}
-//                     anchorOrigin={{
-//                       vertical: "bottom",
-//                       horizontal: "left",
-//                     }}
-//                   >
-//                     <Typography sx={{ p: 2 }}>
-//                       The content of the Popover.
-//                     </Typography>
-//                   </Popover>
 
-// const [anchorEl, setAnchorEl] = useState(null);
-// const handleClick = (event) => {
-//   setAnchorEl(event.currentTarget);
-// };
-
-// const handleClose = () => {
-//   setAnchorEl(null);
-// };
-
-// const open = Boolean(anchorEl);
-// //   const isopen = open ? "simple-popover" : undefined;

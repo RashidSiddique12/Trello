@@ -71,6 +71,31 @@
     display: flex;
     justify-content: space-between;
 }
+
+
+.listAction{
+    width: 250px;
+    padding: 4rem;
+}
+.listAction > div{
+    display: flex;
+    justify-content: space-around;
+}
+
+.listCards{
+    margin: 0.8rem;
+    padding: 0.8rem ;
+    display: flex;
+    justify-content: space-between;
+    color: rgb(165, 162, 162);
+    /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+}
+
+.listCards:hover{
+    border: 1px solid blue;
+}
+
+
 /* .modalForm{
     position: absolute;
     top: 50%;
