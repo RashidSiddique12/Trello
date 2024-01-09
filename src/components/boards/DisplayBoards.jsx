@@ -26,7 +26,7 @@ function DisplayBoards() {
       }
     )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data);
         setIsLoading(false);
       })
@@ -46,27 +46,30 @@ function DisplayBoards() {
           Boards
         </Typography>
         <Grid container spacing={2}>
-          <Grid item><CreateNewBoard data={data} setData={setData} /></Grid>
+          <Grid item>
+            <CreateNewBoard data={data} setData={setData} />
+          </Grid>
           {data &&
             data.map(({ id, name, prefs }) => {
               return (
                 <Grid item key={id}>
-                 
-                  <Link  to={{pathname: `/board/${id}`,  state:{BoardName : name}}} style={{textDecoration : "none"}}>
-                  
-                  <Card
-                    className="board"
-                    sx={{ backgroundColor: prefs["backgroundColor"] }}
+                  <Link
+                    to={`/board/${id}`}
+                    state={{ BoardName: name }}
+                    style={{ textDecoration: "none" }}
                   >
-                    <CardContent>
-                      <Typography variant="h6" component="div">
-                        {name}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                    <Card
+                      className="board"
+                      sx={{ backgroundColor: prefs["backgroundColor"] }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6" component="div">
+                          {name}
+                        </Typography>
+                      </CardContent>
+                    </Card>
                   </Link>
                 </Grid>
-               
               );
             })}
         </Grid>
