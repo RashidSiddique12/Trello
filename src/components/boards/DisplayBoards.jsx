@@ -51,7 +51,9 @@ function DisplayBoards() {
             data.map(({ id, name, prefs }) => {
               return (
                 <Grid item key={id}>
-                  <Link  to={`/board/${id}`} style={{textDecoration : "none"}}>
+                 
+                  <Link  to={{pathname: `/board/${id}`,  state:{BoardName : name}}} style={{textDecoration : "none"}}>
+                  
                   <Card
                     className="board"
                     sx={{ backgroundColor: prefs["backgroundColor"] }}

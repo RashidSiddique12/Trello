@@ -14,14 +14,16 @@ import LoadingPage from "../handlers/LoadingPage";
 import CreateNewList from "./CreateNewList";
 import ListAction from "./ListAction";
 import DisplayCard from "./card/DisplayCard";
-import AddCard from "./card/AddCard";
 
 // for now i just put here
 const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
 const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
-function ListPage() {
+function ListPage(props) {
+  // const { state } = props.location;
+  // const { BoardName } = state;
+  // console.log("props", props);
   const { id } = useParams();
   const [listData, setListData] = useState();
   const [boardName, setBoardName] = useState();
@@ -40,7 +42,7 @@ function ListPage() {
       }
     )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setListData(res.data);
         setIsLoading(false);
       })
@@ -73,7 +75,7 @@ function ListPage() {
     })
       .then((res) => {
         // console.log(res.data);
-        setListData(listData.filter((list)=>list.id !== listId))
+        setListData(listData.filter((list) => list.id !== listId));
       })
       .catch((err) => {
         console.log(err);
@@ -92,16 +94,15 @@ function ListPage() {
           ) : (
             <Container maxWidth="2xl" className="listContainer">
               <div className="displayList">
-                {listData.map(({ id, name}) => (
+                {listData.map(({ id, name }) => (
                   <div key={id}>
                     <Card sx={{ minWidth: 275 }}>
                       <CardContent className="listCardContent">
                         {" "}
                         <p>{name}</p>
-                       <ListAction handleArchive={handleArchive} listId={id}/>
+                        <ListAction handleArchive={handleArchive} listId={id} />
                       </CardContent>
-                      <DisplayCard listId={id}/>
-                      
+                      <DisplayCard listId={id} />
                     </Card>
                   </div>
                 ))}
@@ -122,5 +123,3 @@ function ListPage() {
 }
 
 export default ListPage;
-
-

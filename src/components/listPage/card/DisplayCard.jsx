@@ -1,8 +1,8 @@
-import { Card, CardContent } from "@mui/material";
+import { Card } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import EditIcon from '@mui/icons-material/Edit';
 import AddCard from "./AddCard";
+import EditCard from "./EditCard";
 
 // for now i just put here
 const ApiToken =
@@ -18,23 +18,40 @@ function DisplayCard({ listId }) {
     )
       .then((res) => {
         setCards(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  const handleArchiveCard = (cardId) => {
+    axios(
+      `https://api.trello.com/1/cards/${cardId}?key=${ApiKey}&token=${ApiToken}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => {
+        // console.log(res);
+        setCards(cards.filter((card) => card.id !== cardId));
+      })
+      .catch((err) => {
+        // console.log(err);
+        alert("Something Went Wrong");
+      });
+  };
+
   return (
     <>
       {cards &&
         cards.map(({ id, name }) => (
           <Card key={id} className="listCards">
-         <p>{name}</p>
-         <EditIcon fontSize="small" />
+            <p>{name}</p>
+            <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
           </Card>
         ))}
-        <AddCard listId={listId} cards={cards} setCards={setCards} />
+      <AddCard listId={listId} cards={cards} setCards={setCards} />
     </>
   );
 }

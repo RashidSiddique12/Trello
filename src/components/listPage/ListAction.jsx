@@ -9,14 +9,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
 
-// for now i just put here
-const ApiToken =
-  "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
-
-function ListAction({ handleArchive, listId}) {
+function ListAction({ handleArchive, listId }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -64,7 +58,7 @@ function ListAction({ handleArchive, listId}) {
             <ListItemButton>
               <ListItemText primary="Move all card in this list" />
             </ListItemButton>
-            <ListItemButton onClick={()=>handleArchive(listId)}>
+            <ListItemButton onClick={() => handleArchive(listId)}>
               <ListItemText primary="Archive this list" />
             </ListItemButton>
           </List>
