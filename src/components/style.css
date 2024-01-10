@@ -135,6 +135,19 @@
 
 }
 
+.checkListItem{
+  display: flex;
+  justify-content:space-between;
+  /* color: black;
+   */
+}
+.checkListItem:hover{
+  background-color: rgb(221, 221, 221);
+  border-radius: 5px;
+}
+.checkListItem button{
+  color: black;
+}
 /* .modalForm{
     position: absolute;
     top: 50%;

@@ -9,11 +9,13 @@ import {
 import TopicIcon from "@mui/icons-material/Topic";
 import CloseIcon from "@mui/icons-material/Close";
 import ChecklistIcon from "@mui/icons-material/Checklist";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import { BorderLinearProgress } from "./ProgressLine";
+import DeleteCheckList from "./DeleteCheckList";
+import DisplayCheckListItem from "./DisplayCheckListItem";
 
 const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
@@ -26,9 +28,10 @@ function OpenCard({
   checkListData,
   CardName,
 }) {
-  const [progress, setProgress] = useState(50);
+  const [progress, setProgress] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
+  console.log(checkListData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,9 +65,23 @@ function OpenCard({
     }
     setNewCheckList("");
   };
-
+  const deleteChecklist = (checkListId) => {
+    axios({
+      method: "DELETE",
+      url: `https://api.trello.com/1/cards/${cardId}/checklists/${checkListId}?key=${ApiKey}&token=${ApiToken}`,
+    })
+      .then((res) => {
+        setCheckListData((prevCheckListData) =>
+          prevCheckListData.filter((item) => item.id !== checkListId)
+        );
+        console.log("delete successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const isopen = open ? "simple-popover" : undefined;
   return (
     <div>
       <div className="openCardTitle">
@@ -82,7 +99,7 @@ function OpenCard({
           </Typography>
 
           {checkListData &&
-            checkListData.map(({ id, name }) => {
+            checkListData.map(({ id, name, checkItems }) => {
               return (
                 <Card sx={{ boxShadow: "none" }} key={id}>
                   <div className="checklistHead">
@@ -90,7 +107,10 @@ function OpenCard({
                       <CheckBoxIcon sx={{ marginRight: "0.7rem" }} />
                       {name}
                     </CardActions>
-                    <Button variant="contained">Delete</Button>
+                    <DeleteCheckList
+                      deleteChecklist={deleteChecklist}
+                      id={id}
+                    />
                   </div>
                   <div className="progress">
                     <p>{progress}%</p>
@@ -100,9 +120,7 @@ function OpenCard({
                       value={progress}
                     />
                   </div>
-                  <CardActions>
-                    <Button variant="contained">Add Item</Button>
-                  </CardActions>
+                  <DisplayCheckListItem id={id} />
                 </Card>
               );
             })}
@@ -114,8 +132,10 @@ function OpenCard({
               onClick={handleClick}
               sx={{
                 display: "flex",
-                backgroundColor: "#cfcdca",
+                backgroundColor: "#137fd8",
                 minWidth: "150px",
+                color: "white",
+                cursor: "pointer",
               }}
             >
               <ChecklistIcon
@@ -126,7 +146,7 @@ function OpenCard({
               </CardActions>
             </Card>
             <Popover
-              id={id}
+              isopen={isopen}
               open={open}
               anchorEl={anchorEl}
               onClose={handleCloseAddChecklist}
@@ -164,5 +184,3 @@ function OpenCard({
 }
 
 export default OpenCard;
-
-

@@ -12,7 +12,7 @@ const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
 function DisplayCard({ listId }) {
   const [cards, setCards] = useState();
-  const [open, setOpen] = useState(false);
+  const [openStates, setOpenStates] = useState({})
   const [checkListData, setCheckListData] = useState([]);
  
   useEffect(() => {
@@ -28,7 +28,7 @@ function DisplayCard({ listId }) {
       });
   }, []);
 
-  const handleArchiveCard = (e, cardId) => {
+  const handleArchiveCard = (cardId) => {
     axios(
       `https://api.trello.com/1/cards/${cardId}?key=${ApiKey}&token=${ApiToken}`,
       {
@@ -40,10 +40,12 @@ function DisplayCard({ listId }) {
         setCards(cards.filter((card) => card.id !== cardId));
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
         alert("Something Went Wrong");
       });
   };
+
+  
 
   const handleOpen = (cardId) => {
     axios(
@@ -60,9 +62,18 @@ function DisplayCard({ listId }) {
         console.log(err);
       });
   
-    setOpen(true);
+      setOpenStates((prevOpenStates) => ({
+        ...prevOpenStates,
+        [cardId]: true,
+      }));
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = (cardId) => {
+    // Update the specific card's open state
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [cardId]: false,
+    }));
+  };
 
 
   return (
@@ -82,9 +93,9 @@ function DisplayCard({ listId }) {
               <p>{name}</p>
               <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
             </Card>
-            <Modal open={open} onClose={handleClose}>
+            <Modal open={openStates[id] || false} onClose={() => handleClose(id)}>
               <Box sx={style}>
-                <OpenCard handleClose={handleClose} setCheckListData={setCheckListData} checkListData={checkListData} cardId={id} CardName={name} />
+                <OpenCard handleClose={()=>handleClose(id)} setCheckListData={setCheckListData} checkListData={checkListData} cardId={id} CardName={name} />
               </Box>
             </Modal>
           </div>
