@@ -11,6 +11,7 @@ function EditCard({handleArchiveCard}) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
+    // event.stopPropagation()
     setAnchorEl(event.currentTarget);
   };
 
@@ -22,7 +23,7 @@ function EditCard({handleArchiveCard}) {
   const isopen = open ? "simple-popover" : undefined;
 
   return (
-    <div>
+    <div onClick={(e)=>e.stopPropagation()}>
       <EditIcon fontSize="small" onClick={handleClick} />
       <Popover
         isopen={isopen}

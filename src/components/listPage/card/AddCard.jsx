@@ -8,12 +8,11 @@ const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
 const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
-function AddCard({ listId,cards,  setCards}) {
+function AddCard({ listId, cards, setCards }) {
   const [openTextField, setOpenTextField] = useState(false);
   const [newCard, setNewCard] = useState();
 
   const handleAddCard = (e) => {
-  
     e.preventDefault();
     if (newCard !== "") {
       axios({
@@ -29,7 +28,7 @@ function AddCard({ listId,cards,  setCards}) {
         .then((res) => {
           // console.log(res);
           setCards([...cards, res.data]);
-          console.log("added successfully")
+          console.log("added successfully");
         })
         .catch((err) => {
           console.log(err);
@@ -47,12 +46,12 @@ function AddCard({ listId,cards,  setCards}) {
       <AddCardIcon className="addCardIcon" />
     </CardActions>
   ) : (
-    <Card>
+    <Card className="addCard" sx={{boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"}}>
       <CardContent>
         <form onSubmit={handleAddCard} className="Cardform">
           <input
             type="text"
-            placeholder="Enter the list title"
+            placeholder="Enter the title of a card"
             value={newCard}
             onChange={(e) => setNewCard(e.target.value)}
           />

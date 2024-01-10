@@ -1,100 +1,139 @@
-.boardContainer{
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+.boardContainer {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
-
-.board{
-    width: 250px;
-    padding:1rem 0;
+.board {
+  width: 250px;
+  padding: 1rem 0;
 }
-#newBoard{
-    background: rgb(237, 234, 234);
-    /* color: grey; */
-    text-align: center;
+#newBoard {
+  background: rgb(237, 234, 234);
+  /* color: grey; */
+  text-align: center;
 }
- #backbtn{
-    background-color: black;
+#backbtn {
+  background-color: black;
 }
-#createCardContent{
-    padding: 1rem;
-    line-height: 0;
+#createCardContent {
+  padding: 1rem;
+  line-height: 0;
 }
-.displayList{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    padding-top: 1rem;
+.displayList {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding-top: 1rem;
 }
-.listAppToolbar{
-    display: flex;
-    gap: 2rem;
-}
-
-.listContainer{
-    min-height: 91vh;
-    background-color: #0055CC;
-    overflow: scroll;
-}
-.listCardContent{
-    display: flex;
-    justify-content: space-between;
-}
-.listCardContent button{
-    margin-top: -1rem;
-    margin-right: -1rem;
-    /* background-color: aqua; */
-    color: rgb(79, 77, 77);;
+.listAppToolbar {
+  display: flex;
+  gap: 2rem;
 }
 
-.listCardAction{
-    display: flex;
-    justify-content: space-between;
-    color: rgb(105, 102, 102);;
+.listContainer {
+  min-height: 91vh;
+  background-color: #0055cc;
+  overflow: scroll;
 }
-.listCardAction button{
-    color: rgb(79, 77, 77);
-  
+.listCardContent {
+  display: flex;
+  justify-content: space-between;
+}
+.listCardContent button {
+  margin-top: -1rem;
+  margin-right: -1rem;
+  /* background-color: aqua; */
+  color: rgb(79, 77, 77);
 }
 
-.Cardform{
-    /* background-color: aqua; */
+.listCardAction {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(105, 102, 102);
 }
-.Cardform input{
-    width: 90%;
-    padding: 0.5rem;
-    margin-bottom: 0rem;
-    /* display: flex;
+.listCardAction button {
+  color: rgb(79, 77, 77);
+}
+
+.Cardform {
+  /* background-color: aqua; */
+}
+.Cardform input {
+  width: 90%;
+  padding: 0.5rem;
+  margin-bottom: 0rem;
+  /* display: flex;
     justify-content: space-between; */
 }
-.Cardform > div{
-    display: flex;
-    justify-content: space-between;
+.Cardform > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listAction {
+  width: 250px;
+  padding: 4rem;
+}
+.listAction > div {
+  display: flex;
+  justify-content: space-around;
+}
+
+.listCards {
+  margin: 0.8rem;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(165, 162, 162);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.listCards:hover {
+  border: 1px solid blue;
+}
+
+.addCard {
+  margin: 0.7rem;
+}
+.addCard input {
+  border-radius: 5px;
+  padding: 1rem 0.5rem;
+  border: 1px solid black;
 }
 
 
-.listAction{
-    width: 250px;
-    padding: 4rem;
-}
-.listAction > div{
-    display: flex;
-    justify-content: space-around;
+.openCardTitle{
+
+  display: flex;
+  justify-content: space-between;
 }
 
-.listCards{
-    margin: 0.8rem;
-    padding: 0.8rem ;
-    display: flex;
-    justify-content: space-between;
-    color: rgb(165, 162, 162);
-    /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+.openCardBody{
+  margin-top: 2rem;
+  display: flex;
+  gap: 2rem;
+}
+.openCardBody .left{
+  width: 70%;
+}
+.openCardBody :right{
+  width: 30%;
 }
 
-.listCards:hover{
-    border: 1px solid blue;
+.checklistHead{
+  display: flex;
+  justify-content: space-between;
 }
+.checklistHead button{
+  /* padding-top:-5rem ; */
+}
+.progress{
+  /* display: flex; */
+  /* justify-content: space-between; */
 
+}
 
 /* .modalForm{
     position: absolute;
@@ -106,5 +145,5 @@
     border: 2px solid #000;
     box-shadow: 24;
     /* padding: 10px, */
-    /* margin: 1rem; */
+/* margin: 1rem; */
 /* } */
