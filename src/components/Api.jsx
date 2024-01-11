@@ -70,6 +70,23 @@ export const displayListPageEP = (id,setListData, setIsLoading,setError)=>{
     });
 }
 
+export const handleAddlistEP = (newList,boardId ,listData, setListData)=>{
+  axios(
+    `https://api.trello.com/1/lists?name=${newList}&idBoard=${boardId}&key=${ApiKey}&token=${ApiToken}`,
+    {
+      method: "POST",
+    }
+  )
+    .then((res) => {
+      setListData([...listData, res.data]);
+      // setNewList("");
+      console.log("list created");
+    })
+    .catch((err) => {
+      alert("Internal Error");
+    });
+}
+
 
 export const handleArchiveListEP = (listId,setListData, listData ) => {
   axios({

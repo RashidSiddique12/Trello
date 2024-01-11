@@ -1,14 +1,11 @@
 import {
   Button,
-  Divider,
   List,
   ListItemButton,
   ListItemText,
   Popover,
-  Typography,
 } from "@mui/material";
 import { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 
 function ListAction({ handleArchive, listId }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,10 +33,6 @@ function ListAction({ handleArchive, listId }) {
       >
         <div>
           <List className="listAction">
-            {/* <div>
-              <Typography justifyItems="center">List Actions</Typography>
-              <CloseIcon onClick={handleClose} />
-            </div> */}
             <ListItemButton onClick={() => handleArchive(listId)}>
               <ListItemText primary="Archive this list" />
             </ListItemButton>

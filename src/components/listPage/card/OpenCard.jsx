@@ -16,11 +16,8 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { BorderLinearProgress } from "./ProgressLine";
 import DeleteCheckList from "./DeleteCheckList";
 import DisplayCheckListItem from "./DisplayCheckListItem";
-import { createBoardEP, createCheckListEP, deleteChecklistEP } from "../../Api";
+import { createCheckListEP, deleteChecklistEP } from "../../Api";
 
-const ApiToken =
-  "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
 function OpenCard({
   cardId,
@@ -46,42 +43,13 @@ function OpenCard({
     e.preventDefault();
     if (newChecklist !== "") {
       createCheckListEP(cardId, newChecklist, setCheckListData, checkListData)
-      // axios({
-      //   method: "POST",
-      //   url: `https://api.trello.com/1/cards/${cardId}/checklists?key=${ApiKey}&token=${ApiToken}`,
-      //   data: {
-      //     name: newChecklist,
-      //   },
-      //   headers: {
-      //     Accept: "application/json",
-      //   },
-      // })
-      //   .then((res) => {
-      //     // console.log(res);
-      //     setCheckListData([...checkListData, res.data]);
-      //     console.log("added successfully");
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+
     }
     setNewCheckList("");
   };
   const deleteChecklist = (checkListId) => {
     deleteChecklistEP(cardId,checkListId, setCheckListData);
-    // axios({
-    //   method: "DELETE",
-    //   url: `https://api.trello.com/1/cards/${cardId}/checklists/${checkListId}?key=${ApiKey}&token=${ApiToken}`,
-    // })
-    //   .then((res) => {
-    //     setCheckListData((prevCheckListData) =>
-    //       prevCheckListData.filter((item) => item.id !== checkListId)
-    //     );
-    //     console.log("delete successfully");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+
   };
   const open = Boolean(anchorEl);
   const isopen = open ? "simple-popover" : undefined;

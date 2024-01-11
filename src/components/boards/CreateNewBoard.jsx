@@ -12,10 +12,6 @@ import axios from "axios";
 import { useState } from "react";
 import { createBoardEP } from "../Api";
 
-// const ApiToken =
-//   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-// const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
-
 function CreateNewBoard({ data, setData }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,19 +24,6 @@ function CreateNewBoard({ data, setData }) {
     console.log(newBoardName);
     if (newBoardName !== "") {
       createBoardEP(data,setData,newBoardName, setNewBoardName)
-      // axios(
-      //   `https://api.trello.com/1/boards/?name=${newBoardName}&key=${ApiKey}&token=${ApiToken}`,
-      //   {
-      //     method: "POST",
-      //   }
-      // )
-      //   .then((response) => {
-      //     //   console.log(`Response: ${response.status} ${response.statusText}`);
-      //     console.log(response.data);
-      //     setData([...data, response.data]);
-      //     setNewBoardName("");
-      //   })
-      //   .catch((err) => console.error(err));
     }
     handleClose();
   };

@@ -1,7 +1,6 @@
 import { Button, Card, CardContent } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
 import { handleAddItemEP } from "../../Api";
 
 // const ApiToken =
@@ -18,24 +17,12 @@ function AddItem({ checkListId, checkItems, setChekItems }) {
     e.preventDefault();
     console.log(checkListId);
     if (newAddItem !== "") {
-      handleAddItemEP(checkListId, newAddItem,setChekItems, checkItems);
-      // axios(
-      //   `https://api.trello.com/1/checklists/${checkListId}/checkItems?name=${newAddItem}&key=${ApiKey}&token=${ApiToken}`,
-      //   {
-      //     method: "POST",
-      //   }
-      // )
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     setChekItems([...checkItems, res.data]);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      handleAddItemEP(checkListId, newAddItem, setChekItems, checkItems);
+
       setNewAddItem("");
     }
   };
-  // console.log(checkListData);
+
   return add ? (
     <Card className="addCard">
       <CardContent>

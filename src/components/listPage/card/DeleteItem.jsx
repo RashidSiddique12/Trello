@@ -1,11 +1,6 @@
 import { Button, Popover } from "@mui/material";
-import axios from "axios";
 import React from "react";
 import { DeleteCheckItemEP } from "../../Api";
-
-const ApiToken =
-  "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
 function DeleteItem({ checkItemsId, checkListId, checkItems, setChekItems }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,20 +14,7 @@ function DeleteItem({ checkItemsId, checkListId, checkItems, setChekItems }) {
   const open = Boolean(anchorEl);
 
   const DeleteCheckItem = () => {
-    // console.log("delete item");
     DeleteCheckItemEP(checkListId, checkItemsId, setChekItems, checkItems);
-    // axios(
-    //   `https://api.trello.com/1/checklists/${checkListId}/checkItems/${checkItemsId}?key=${ApiKey}&token=${ApiToken}`,
-    //   {
-    //     method: "DELETE",
-    //   }
-    // )
-    //   .then(() => {
-    //     setChekItems(checkItems.filter((item) => item.id !== checkItemsId));
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
   return (
     <div>

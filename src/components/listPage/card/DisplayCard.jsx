@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import AddCard from "./AddCard";
 import EditCard from "./EditCard";
 import OpenCard from "./OpenCard";
-import { displayCardEP, fetchCardDeatailsEP, handleArchiveCardEP } from "../../Api";
+import {
+  displayCardEP,
+  fetchCardDeatailsEP,
+  handleArchiveCardEP,
+} from "../../Api";
 
 // for now i just put here
 const ApiToken =
@@ -13,64 +17,25 @@ const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
 function DisplayCard({ listId }) {
   const [cards, setCards] = useState();
-  const [openStates, setOpenStates] = useState({})
+  const [openStates, setOpenStates] = useState({});
   const [checkListData, setCheckListData] = useState([]);
-  console.log("cards" , cards)
- 
+  console.log("cards", cards);
+
   useEffect(() => {
     displayCardEP(setCards, listId);
-    // axios(
-    //   `https://api.trello.com/1/lists/${listId}/cards?key=${ApiKey}&token=${ApiToken}`
-    // )
-    //   .then((res) => {
-    //     setCards(res.data);
-    //     // console.log(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, []);
 
   const handleArchiveCard = (cardId) => {
     handleArchiveCardEP(cardId, setCards, cards);
-    // axios(
-    //   `https://api.trello.com/1/cards/${cardId}?key=${ApiKey}&token=${ApiToken}`,
-    //   {
-    //     method: "DELETE",
-    //   }
-    // )
-    //   .then((res) => {
-    //     // console.log(res);
-    //     setCards(cards.filter((card) => card.id !== cardId));
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     alert("Something Went Wrong");
-    //   });
   };
 
-  
-
   const handleOpen = (cardId) => {
-    fetchCardDeatailsEP(cardId, setCheckListData, setOpenStates)
-    // axios(
-    //   `https://api.trello.com/1/cards/${cardId}/checklists?key=${ApiKey}&token=${ApiToken}`,
-    //   {
-    //     method: "GET",
-    //   }
-    // )
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     setCheckListData(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  
-      setOpenStates((prevOpenStates) => ({
-        ...prevOpenStates,
-        [cardId]: true,
-      }));
+    fetchCardDeatailsEP(cardId, setCheckListData, setOpenStates);
+
+    setOpenStates((prevOpenStates) => ({
+      ...prevOpenStates,
+      [cardId]: true,
+    }));
   };
   const handleClose = (cardId) => {
     // Update the specific card's open state
@@ -80,30 +45,38 @@ function DisplayCard({ listId }) {
     }));
   };
 
-
   return (
     <>
       {cards &&
-        cards.map(({ id, name, badges,checkItemStates }) => (
+        cards.map(({ id, name, badges, checkItemStates }) => (
           <div key={id}>
-            <Card className="listCards"
+            <Card
+              className="listCards"
               key={id}
-              onClick={()=>handleOpen(id)}
-              
+              onClick={() => handleOpen(id)}
               sx={{
                 boxShadow:
                   "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
               }}
             >
-              <div >
-              <p>{name}</p>
-              <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
+              <div>
+                <p>{name}</p>
+                <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
               </div>
-            {/* <p>{checkItemStates.length}/{badges.checkItems}</p> */}
+              {/* <p>{checkItemStates.length}/{badges.checkItems}</p> */}
             </Card>
-            <Modal open={openStates[id] || false} onClose={() => handleClose(id)}>
-              <Box sx={style} >
-                <OpenCard handleClose={()=>handleClose(id)} setCheckListData={setCheckListData} checkListData={checkListData} cardId={id} CardName={name} />
+            <Modal
+              open={openStates[id] || false}
+              onClose={() => handleClose(id)}
+            >
+              <Box sx={style}>
+                <OpenCard
+                  handleClose={() => handleClose(id)}
+                  setCheckListData={setCheckListData}
+                  checkListData={checkListData}
+                  cardId={id}
+                  CardName={name}
+                />
               </Box>
             </Modal>
           </div>
@@ -121,8 +94,6 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
-  // maxHeight:600,
-  // overFlow: "scroll",
   bgcolor: "background.paper",
   borderRadius: "25px",
   boxShadow: 24,
