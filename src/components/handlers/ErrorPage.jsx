@@ -1,8 +1,10 @@
-
-function ErrorPage({title="Page not Found"}) {
+import { Typography } from "@mui/material";
+import ErrorImg from "../../assets/404-error.svg";
+function ErrorPage({message="Page not Found"}) {
   return (
-    <div>
-      <h1>{title}</h1>
+    <div className="handler">
+      <img src={ErrorImg} alt="Not found Error image" />
+      <Typography variant="h5">{message}</Typography>
     </div>
   )
 }

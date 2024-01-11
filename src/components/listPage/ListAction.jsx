@@ -36,28 +36,10 @@ function ListAction({ handleArchive, listId }) {
       >
         <div>
           <List className="listAction">
-            <div>
+            {/* <div>
               <Typography justifyItems="center">List Actions</Typography>
               <CloseIcon onClick={handleClose} />
-            </div>
-            <ListItemButton>
-              <ListItemText primary="Add Card" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Copy List" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Move List" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemText primary="Watch" />
-            </ListItemButton>
-          </List>
-          <Divider />
-          <List className="listAction">
-            <ListItemButton>
-              <ListItemText primary="Move all card in this list" />
-            </ListItemButton>
+            </div> */}
             <ListItemButton onClick={() => handleArchive(listId)}>
               <ListItemText primary="Archive this list" />
             </ListItemButton>

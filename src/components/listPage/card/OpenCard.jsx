@@ -16,6 +16,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { BorderLinearProgress } from "./ProgressLine";
 import DeleteCheckList from "./DeleteCheckList";
 import DisplayCheckListItem from "./DisplayCheckListItem";
+import { createBoardEP, createCheckListEP, deleteChecklistEP } from "../../Api";
 
 const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
@@ -28,7 +29,7 @@ function OpenCard({
   checkListData,
   CardName,
 }) {
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
   console.log(checkListData);
@@ -44,46 +45,48 @@ function OpenCard({
   const createCheckList = (e) => {
     e.preventDefault();
     if (newChecklist !== "") {
-      axios({
-        method: "POST",
-        url: `https://api.trello.com/1/cards/${cardId}/checklists?key=${ApiKey}&token=${ApiToken}`,
-        data: {
-          name: newChecklist,
-        },
-        headers: {
-          Accept: "application/json",
-        },
-      })
-        .then((res) => {
-          // console.log(res);
-          setCheckListData([...checkListData, res.data]);
-          console.log("added successfully");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      createCheckListEP(cardId, newChecklist, setCheckListData, checkListData)
+      // axios({
+      //   method: "POST",
+      //   url: `https://api.trello.com/1/cards/${cardId}/checklists?key=${ApiKey}&token=${ApiToken}`,
+      //   data: {
+      //     name: newChecklist,
+      //   },
+      //   headers: {
+      //     Accept: "application/json",
+      //   },
+      // })
+      //   .then((res) => {
+      //     // console.log(res);
+      //     setCheckListData([...checkListData, res.data]);
+      //     console.log("added successfully");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     }
     setNewCheckList("");
   };
   const deleteChecklist = (checkListId) => {
-    axios({
-      method: "DELETE",
-      url: `https://api.trello.com/1/cards/${cardId}/checklists/${checkListId}?key=${ApiKey}&token=${ApiToken}`,
-    })
-      .then((res) => {
-        setCheckListData((prevCheckListData) =>
-          prevCheckListData.filter((item) => item.id !== checkListId)
-        );
-        console.log("delete successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    deleteChecklistEP(cardId,checkListId, setCheckListData);
+    // axios({
+    //   method: "DELETE",
+    //   url: `https://api.trello.com/1/cards/${cardId}/checklists/${checkListId}?key=${ApiKey}&token=${ApiToken}`,
+    // })
+    //   .then((res) => {
+    //     setCheckListData((prevCheckListData) =>
+    //       prevCheckListData.filter((item) => item.id !== checkListId)
+    //     );
+    //     console.log("delete successfully");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
   const open = Boolean(anchorEl);
   const isopen = open ? "simple-popover" : undefined;
   return (
-    <div>
+    <div >
       <div className="openCardTitle">
         <Typography variant="h5">
           <TopicIcon sx={{ paddingRight: "1rem" }} />
@@ -92,7 +95,7 @@ function OpenCard({
         <CloseIcon onClick={handleClose} />
       </div>
       <div className="openCardBody">
-        <div className="left">
+        <div className="left" >
           <Typography>
             {/* <ChecklistIcon sx={{ paddingRight: "1rem" }} /> */}
             CheckList Items
@@ -112,15 +115,17 @@ function OpenCard({
                       id={id}
                     />
                   </div>
-                  <div className="progress">
+                  {/* <div className="progress">
                     <p>{Number(progress)}%</p>
                     <BorderLinearProgress
                       sx={{ margin: "1rem" }}
                       variant="determinate"
                       value={progress}
                     />
-                  </div>
-                  <DisplayCheckListItem id={id} cardId={cardId} setProgress={setProgress} />
+                  </div> */}
+                  <DisplayCheckListItem id={id} cardId={cardId} 
+                  // setProgress={setProgress}
+                   />
                 </Card>
               );
             })}
@@ -168,7 +173,7 @@ function OpenCard({
                     <br />
                     <div className="CardFormBottom">
                       <Button type="submit" variant="contained" size="small">
-                        Add Card
+                        Add CheckList
                       </Button>
                       <CloseIcon onClick={handleCloseAddChecklist} />
                     </div>

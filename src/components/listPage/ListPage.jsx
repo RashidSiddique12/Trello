@@ -9,6 +9,7 @@ import CreateNewList from "./CreateNewList";
 import ListAction from "./ListAction";
 import DisplayCard from "./card/DisplayCard";
 import { useLocation } from "react-router-dom";
+import { displayListPageEP, handleArchiveListEP } from "../Api";
 
 // for now i just put here
 const ApiToken =
@@ -27,49 +28,51 @@ function ListPage() {
 
   //   console.log(id);
   useEffect(() => {
-    axios(
-      `https://api.trello.com/1/boards/${id}/lists?key=${ApiKey}&token=${ApiToken}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        // console.log(res.data);
-        setListData(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-        setError(err.message);
-      });
+    displayListPageEP(id,setListData, setIsLoading,setError);
+    // axios(
+    //   `https://api.trello.com/1/boards/${id}/lists?key=${ApiKey}&token=${ApiToken}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Accept: "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setListData(res.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setIsLoading(false);
+    //     setError(err.message);
+    //   });
   }, []);
 
   const handleArchive = (listId) => {
-    axios({
-      method: "PUT",
-      url: `https://api.trello.com/1/lists/${listId}/closed?key=${ApiKey}&token=${ApiToken}`,
-      data: {
-        value: true,
-      },
-    })
-      .then((res) => {
-        // console.log(res.data);
-        setListData(listData.filter((list) => list.id !== listId));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    handleArchiveListEP(listId,setListData, listData)
+    // axios({
+    //   method: "PUT",
+    //   url: `https://api.trello.com/1/lists/${listId}/closed?key=${ApiKey}&token=${ApiToken}`,
+    //   data: {
+    //     value: true,
+    //   },
+    // })
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setListData(listData.filter((list) => list.id !== listId));
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
     <div>
       <ListNav boardName={boardName} />
       {error !== "" ? (
-        <ErrorPage />
+        <ErrorPage message={err}/>
       ) : (
         <>
           {isLoading ? (

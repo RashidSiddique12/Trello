@@ -4,6 +4,7 @@ import DisplayBoards from "./components/boards/DisplayBoards";
 import Header from "./components/headers/Header";
 import "./components/style.css";
 import ListPage from "./components/listPage/ListPage";
+import ErrorPage from "./components/handlers/ErrorPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             }
           />
           <Route path="/board/:id" element={<ListPage />} />
+          <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </BrowserRouter>
     </>
