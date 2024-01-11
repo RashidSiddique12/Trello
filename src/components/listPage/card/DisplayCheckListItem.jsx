@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import DeleteItem from "./DeleteItem";
 import axios from "axios";
 import AddItem from "./AddItem";
@@ -8,10 +8,8 @@ const ApiToken =
   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
 const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
-function DisplayCheckListItem({ id }) {
+function DisplayCheckListItem({ id, cardId, setProgress }) {
   const [checkItems, setChekItems] = useState([]);
-
-  const checkedNo = checkItems.filter((item)=>item.state)
 
   useState(() => {
     console.log("dispaly");
@@ -30,13 +28,40 @@ function DisplayCheckListItem({ id }) {
       });
   });
 
-  console.log("data", checkItems);
+  const handleCheckBox = (checkItemId, state) => {
+    const checkItemstate = state === "complete" ? "incomplete" : "complete";
+    console.log("checkitem");
+    axios(
+      `
+        https://api.trello.com/1/cards/${cardId}/checkItem/${checkItemId}?key=${ApiKey}&token=${ApiToken}&state=${checkItemstate}`,
+      {
+        method: "PUT",
+      }
+    )
+      .then((res) => {
+        setChekItems(checkItems.map((checkItem)=>{
+          if(checkItem.id === checkItemId){
+            return {...checkItem, state: checkItemstate}
+          }
+          else{
+            return checkItem;
+          }
+        }))
+        // console.log(res);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const checkedNo = checkItems.filter((item) => item.state === "complete");
+  setProgress((((checkedNo.length / checkItems.length) * 100).toFixed(2)) || 0);
+
+  //   console.log("data", checkItems);
   return (
     <div>
       {checkItems.map((item) => (
         <div key={item.id} className="checkListItem">
-          <FormGroup>
-            <FormControlLabel control={<Checkbox />} label={item.name} />
+          <FormGroup sx={{display:"flex"}}>
+            <FormControlLabel onClick={() => handleCheckBox(item.id, item.state)} control={<Checkbox checked={item.state === "complete" ? true : false}/>} label={item.name} />
           </FormGroup>
           <DeleteItem
             checkItemsId={item.id}
@@ -54,5 +79,4 @@ function DisplayCheckListItem({ id }) {
     </div>
   );
 }
-
 export default DisplayCheckListItem;

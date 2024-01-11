@@ -99,7 +99,7 @@ function OpenCard({
           </Typography>
 
           {checkListData &&
-            checkListData.map(({ id, name, checkItems }) => {
+            checkListData.map(({ id, name }) => {
               return (
                 <Card sx={{ boxShadow: "none" }} key={id}>
                   <div className="checklistHead">
@@ -113,14 +113,14 @@ function OpenCard({
                     />
                   </div>
                   <div className="progress">
-                    <p>{progress}%</p>
+                    <p>{Number(progress)}%</p>
                     <BorderLinearProgress
                       sx={{ margin: "1rem" }}
                       variant="determinate"
                       value={progress}
                     />
                   </div>
-                  <DisplayCheckListItem id={id} />
+                  <DisplayCheckListItem id={id} cardId={cardId} setProgress={setProgress} />
                 </Card>
               );
             })}
@@ -139,7 +139,7 @@ function OpenCard({
               }}
             >
               <ChecklistIcon
-                sx={{ paddingRight: "0.5rem", paddingTop: "0.4rem" }}
+                sx={{padding:"0.5rem 0.5rem 0 1rem" }}
               />
               <CardActions>
                 <Typography>CheckList</Typography>
