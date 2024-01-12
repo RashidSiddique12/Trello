@@ -11,7 +11,7 @@ function AddItem({ checkListId, checkItems, setChekItems }) {
   const [add, setAdd] = useState(false);
   const [newAddItem, setNewAddItem] = useState();
 
-  console.log("tttttttt", checkListId);
+  // console.log("tttttttt", checkListId);
 
   const handleAddItem = (e) => {
     e.preventDefault();

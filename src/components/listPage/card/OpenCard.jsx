@@ -10,7 +10,6 @@ import TopicIcon from "@mui/icons-material/Topic";
 import CloseIcon from "@mui/icons-material/Close";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import { useState } from "react";
-import axios from "axios";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import { BorderLinearProgress } from "./ProgressLine";
@@ -26,7 +25,7 @@ function OpenCard({
   checkListData,
   CardName,
 }) {
-  // const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
   console.log(checkListData);
@@ -44,8 +43,8 @@ function OpenCard({
     if (newChecklist !== "") {
       createCheckListEP(cardId, newChecklist, setCheckListData, checkListData)
 
+      setNewCheckList("");
     }
-    setNewCheckList("");
   };
   const deleteChecklist = (checkListId) => {
     deleteChecklistEP(cardId,checkListId, setCheckListData);
@@ -83,16 +82,17 @@ function OpenCard({
                       id={id}
                     />
                   </div>
-                  {/* <div className="progress">
-                    <p>{Number(progress)}%</p>
+                  <div className="progress">
+                    
+                    {/* <p>{progress}%</p>
                     <BorderLinearProgress
                       sx={{ margin: "1rem" }}
                       variant="determinate"
-                      value={progress}
-                    />
-                  </div> */}
+                      value={0}
+                    /> */}
+                  </div>
                   <DisplayCheckListItem id={id} cardId={cardId} 
-                  // setProgress={setProgress}
+                  // setProgress={setProgress} progress={progress}
                    />
                 </Card>
               );

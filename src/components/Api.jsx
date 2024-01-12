@@ -102,6 +102,7 @@ export const handleArchiveListEP = (listId,setListData, listData ) => {
     })
     .catch((err) => {
       console.log(err);
+      alert("Internal Error");
     });
 };
 
@@ -136,6 +137,7 @@ export const handleAddCardEP = (listId, newCard, setCards, cards)=>{
     })
     .catch((err) => {
       console.log(err);
+      alert("Internal Error");
     });
 }
 
@@ -152,7 +154,7 @@ export const handleArchiveCardEP = (cardId, setCards, cards)=>{
     })
     .catch((err) => {
       console.log(err);
-      alert("Something Went Wrong");
+      alert("Internal Error");
     });
 }
 
@@ -169,6 +171,7 @@ export const fetchCardDeatailsEP =(cardId, setCheckListData, setOpenStates)=>{
     })
     .catch((err) => {
       console.log(err);
+      // alert("Internal Error");
     });
 
     
@@ -192,6 +195,7 @@ export const createCheckListEP = (cardId, newChecklist, setCheckListData, checkL
     })
     .catch((err) => {
       console.log(err);
+      alert("Internal Error");
     });
 }
 
@@ -208,6 +212,7 @@ export const deleteChecklistEP = (cardId,checkListId, setCheckListData)=>{
     })
     .catch((err) => {
       console.log(err);
+      alert("Internal Error");
     });
 }
 
@@ -240,6 +245,7 @@ export const handleAddItemEP= (checkListId, newAddItem,setChekItems, checkItems)
     })
     .catch((err) => {
       console.log(err);
+      alert("Internal Error");
     });
 }
 
@@ -255,6 +261,7 @@ export const DeleteCheckItemEP = (checkListId, checkItemsId, setChekItems, check
       })
       .catch((err) => {
         console.log(err);
+        alert("Internal Error");
       });
 }
 
@@ -276,5 +283,7 @@ export const handleCheckBoxEP = (cardId,checkItemId, checkItems,setChekItems, ch
         }
       }))
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      alert("Internal Error");
+    });
 }

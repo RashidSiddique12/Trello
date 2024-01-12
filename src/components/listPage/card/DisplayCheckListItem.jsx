@@ -5,18 +5,22 @@ import AddItem from "./AddItem";
 import { DisplayCheckListItemEP, handleCheckBoxEP } from "../../Api";
 import { BorderLinearProgress } from "./ProgressLine";
 
-function DisplayCheckListItem({ id, cardId }) {
+function DisplayCheckListItem({ id, cardId}) {
   const [checkItems, setChekItems] = useState([]);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     DisplayCheckListItemEP(id, setChekItems);
-  }, [id]);
+  }, []);
 
   useEffect(() => {
+    // console.log("effect")
     const checkedNo = checkItems.filter((item) => item.state === "complete");
     setProgress(((checkedNo.length / checkItems.length) * 100).toFixed(2));
   }, [checkItems]);
+
+  // const checkedNo = checkItems.filter((item) => item.state === "complete");
+  // setProgress([...progress], {id:id, precentage :((checkedNo.length / checkItems.length) * 100).toFixed(2) });
 
   const handleCheckBox = (checkItemId, state) => {
     const checkItemstate = state === "complete" ? "incomplete" : "complete";
