@@ -3,13 +3,11 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleAddItemEP } from "../../Api";
 
-// const ApiToken =
-//   "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-// const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
+// eslint-disable-next-line react/prop-types
 function AddItem({ checkListId, checkItems, setChekItems }) {
   const [add, setAdd] = useState(false);
-  const [newAddItem, setNewAddItem] = useState();
+  const [newAddItem, setNewAddItem] = useState("");
 
   // console.log("tttttttt", checkListId);
 
@@ -32,11 +30,14 @@ function AddItem({ checkListId, checkItems, setChekItems }) {
             placeholder="Enter the title of a card"
             value={newAddItem}
             onChange={(e) => setNewAddItem(e.target.value)}
+            autoFocus={true}
           />
           <br />
           <br />
           <div className="CardFormBottom">
-            <Button type="submit" variant="contained" size="small">
+            <Button type="submit" variant="contained" size="small"
+             disabled={newAddItem.trim() !== "" ? false : true}
+           >
               Add Item
             </Button>
             <CloseIcon onClick={() => setAdd(false)} />

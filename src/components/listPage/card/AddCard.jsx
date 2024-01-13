@@ -4,15 +4,16 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleAddCardEP } from "../../Api";
 
+// eslint-disable-next-line react/prop-types
 function AddCard({ listId, cards, setCards }) {
   const [openTextField, setOpenTextField] = useState(false);
-  const [newCard, setNewCard] = useState();
+  const [newCard, setNewCard] = useState("");
 
   const handleAddCard = (e) => {
     e.preventDefault();
-    if (newCard !== "") {
-      handleAddCardEP(listId, newCard, setCards, cards);
-    }
+
+    handleAddCardEP(listId, newCard, setCards, cards);
+
     setOpenTextField(false);
     setNewCard("");
   };
@@ -38,12 +39,18 @@ function AddCard({ listId, cards, setCards }) {
             type="text"
             placeholder="Enter the title of a card"
             value={newCard}
+            autoFocus={true}
             onChange={(e) => setNewCard(e.target.value)}
           />
           <br />
           <br />
           <div className="CardFormBottom">
-            <Button type="submit" variant="contained" size="small">
+            <Button
+              type="submit"
+              variant="contained"
+              size="small"
+              disabled={newCard.trim() !== "" ? false : true}
+            >
               Add Card
             </Button>
             <CloseIcon onClick={() => setOpenTextField(false)} />

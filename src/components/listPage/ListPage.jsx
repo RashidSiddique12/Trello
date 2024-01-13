@@ -37,7 +37,7 @@ function ListPage() {
       ) : (
         <>
           {isLoading ? (
-            <LoadingPage />
+            <LoadingPage/>
           ) : (
             <Container maxWidth="2xl" className="listContainer">
               <div className="displayList">

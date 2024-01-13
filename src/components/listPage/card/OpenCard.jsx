@@ -11,8 +11,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import { useState } from "react";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-
-import { BorderLinearProgress } from "./ProgressLine";
 import DeleteCheckList from "./DeleteCheckList";
 import DisplayCheckListItem from "./DisplayCheckListItem";
 import { createCheckListEP, deleteChecklistEP } from "../../Api";
@@ -25,7 +23,6 @@ function OpenCard({
   checkListData,
   CardName,
 }) {
-  // const [progress, setProgress] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
   console.log(checkListData);
@@ -41,19 +38,18 @@ function OpenCard({
   const createCheckList = (e) => {
     e.preventDefault();
     if (newChecklist !== "") {
-      createCheckListEP(cardId, newChecklist, setCheckListData, checkListData)
+      createCheckListEP(cardId, newChecklist, setCheckListData, checkListData);
 
       setNewCheckList("");
     }
   };
   const deleteChecklist = (checkListId) => {
-    deleteChecklistEP(cardId,checkListId, setCheckListData);
-
+    deleteChecklistEP(cardId, checkListId, setCheckListData);
   };
   const open = Boolean(anchorEl);
   const isopen = open ? "simple-popover" : undefined;
   return (
-    <div >
+    <div>
       <div className="openCardTitle">
         <Typography variant="h5">
           <TopicIcon sx={{ paddingRight: "1rem" }} />
@@ -62,11 +58,8 @@ function OpenCard({
         <CloseIcon onClick={handleClose} />
       </div>
       <div className="openCardBody">
-        <div className="left" >
-          <Typography>
-            {/* <ChecklistIcon sx={{ paddingRight: "1rem" }} /> */}
-            CheckList Items
-          </Typography>
+        <div className="left">
+          <Typography>CheckList Items</Typography>
 
           {checkListData &&
             checkListData.map(({ id, name }) => {
@@ -82,18 +75,8 @@ function OpenCard({
                       id={id}
                     />
                   </div>
-                  <div className="progress">
-                    
-                    {/* <p>{progress}%</p>
-                    <BorderLinearProgress
-                      sx={{ margin: "1rem" }}
-                      variant="determinate"
-                      value={0}
-                    /> */}
-                  </div>
-                  <DisplayCheckListItem id={id} cardId={cardId} 
-                  // setProgress={setProgress} progress={progress}
-                   />
+                  <div className="progress"></div>
+                  <DisplayCheckListItem id={id} cardId={cardId} />
                 </Card>
               );
             })}
@@ -111,9 +94,7 @@ function OpenCard({
                 cursor: "pointer",
               }}
             >
-              <ChecklistIcon
-                sx={{padding:"0.5rem 0.5rem 0 1rem" }}
-              />
+              <ChecklistIcon sx={{ padding: "0.5rem 0.5rem 0 1rem" }} />
               <CardActions>
                 <Typography>CheckList</Typography>
               </CardActions>
@@ -136,11 +117,17 @@ function OpenCard({
                       placeholder="Enter the title of a card"
                       value={newChecklist}
                       onChange={(e) => setNewCheckList(e.target.value)}
+                      autoFocus={true}
                     />
                     <br />
                     <br />
                     <div className="CardFormBottom">
-                      <Button type="submit" variant="contained" size="small">
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        size="small"
+                        disabled={newChecklist.trim() !== "" ? false : true}
+                      >
                         Add CheckList
                       </Button>
                       <CloseIcon onClick={handleCloseAddChecklist} />

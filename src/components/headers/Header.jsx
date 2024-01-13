@@ -18,7 +18,7 @@ export default function Header() {
           >
             Trello
           </Typography>
-          <Search >
+          {/* <Search >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -26,7 +26,7 @@ export default function Header() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
         </Toolbar>
       </AppBar>
     </Box>

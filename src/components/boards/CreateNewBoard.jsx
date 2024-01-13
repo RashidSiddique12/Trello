@@ -51,6 +51,7 @@ function CreateNewBoard({ data, setData }) {
             id="demo-helper-text-misaligned"
             label="Board Title"
             value={newBoardName}
+            autoFocus= {open}
             onChange={(e) => setNewBoardName(e.target.value)}
           />
           <Button
@@ -58,7 +59,7 @@ function CreateNewBoard({ data, setData }) {
             type="submit"
             sx={{ marginTop: "1rem" }}
             variant="contained"
-            disabled={newBoardName !== "" ? false : true}
+            disabled={newBoardName.trim() !== "" ? false : true}
           >
             Submit
           </Button>

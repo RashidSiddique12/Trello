@@ -1,5 +1,4 @@
-import { Backdrop, Box, Card, Fade, Modal, Typography } from "@mui/material";
-import axios from "axios";
+import {  Box, Card, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import AddCard from "./AddCard";
 import EditCard from "./EditCard";
@@ -10,11 +9,8 @@ import {
   handleArchiveCardEP,
 } from "../../Api";
 
-// for now i just put here
-const ApiToken =
-  "ATTA2e4a2b78cb9848691f329022e06ff42e26efb15646856710f1786d483750eb442629BC3F";
-const ApiKey = "146bb53e7b08a007fbb134f5d5487666";
 
+// eslint-disable-next-line react/prop-types
 function DisplayCard({ listId }) {
   const [cards, setCards] = useState();
   const [openStates, setOpenStates] = useState({});
@@ -48,7 +44,7 @@ function DisplayCard({ listId }) {
   return (
     <>
       {cards &&
-        cards.map(({ id, name, badges, checkItemStates }) => (
+        cards.map(({ id, name}) => (
           <div key={id}>
             <Card
               className="listCards"
