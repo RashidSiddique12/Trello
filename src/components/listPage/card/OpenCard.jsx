@@ -25,7 +25,7 @@ function OpenCard({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
-  console.log(checkListData);
+  // console.log(checkListData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

@@ -15,7 +15,7 @@ function DisplayCard({ listId }) {
   const [cards, setCards] = useState();
   const [openStates, setOpenStates] = useState({});
   const [checkListData, setCheckListData] = useState([]);
-  console.log("cards", cards);
+  // console.log("cards", cards);
 
   useEffect(() => {
     displayCardEP(setCards, listId);
@@ -90,6 +90,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
+  border: "none",
   bgcolor: "background.paper",
   borderRadius: "25px",
   boxShadow: 24,

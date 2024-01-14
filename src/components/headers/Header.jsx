@@ -16,7 +16,7 @@ export default function Header() {
             component="div"
             sx={{ flexGrow: 1 }}
           >
-            Trello
+           <img src="https://trello.com/assets/87e1af770a49ce8e84e3.gif" alt="" width={100} />
           </Typography>
           {/* <Search >
             <SearchIconWrapper>

@@ -8,7 +8,10 @@ function ListNav({boardName}) {
       <AppBar position="static">
         <Toolbar className='listAppToolbar'>
           <Link to="/"><Button variant="contained" id='backbtn'><KeyboardBackspaceIcon/> Back</Button></Link>
-          <Typography  variant='h6' id='typo'>{boardName}</Typography>
+          <Typography  variant='h5' id='typo'>{boardName}</Typography>
+          <Typography  variant='h6' id='typo'>
+          <img src="https://trello.com/assets/87e1af770a49ce8e84e3.gif" alt="" width={100} />
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>
