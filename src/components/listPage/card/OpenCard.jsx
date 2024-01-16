@@ -14,18 +14,16 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteCheckList from "./DeleteCheckList";
 import DisplayCheckListItem from "./DisplayCheckListItem";
 import { createCheckListEP, deleteChecklistEP } from "../../Api";
+import { useDispatch, useSelector } from "react-redux";
+import { createNewCheckList, deleteCheckList } from "../../../redux/checkListSlice";
 
-
-function OpenCard({
-  cardId,
-  handleClose,
-  setCheckListData,
-  checkListData,
-  CardName,
-}) {
+// eslint-disable-next-line react/prop-types
+function OpenCard({ cardId, handleClose, CardName }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newChecklist, setNewCheckList] = useState("");
-  // console.log(checkListData);
+  const {checkListData}  = useSelector((state) => state.checkList);
+  const dispatch = useDispatch();
+  // console.log("checklistdata" ,checkListData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,16 +33,19 @@ function OpenCard({
     setAnchorEl(null);
   };
 
-  const createCheckList = (e) => {
+  const createCheckList = async (e) => {
     e.preventDefault();
-    if (newChecklist !== "") {
-      createCheckListEP(cardId, newChecklist, setCheckListData, checkListData);
-
-      setNewCheckList("");
-    }
+    const newData = await createCheckListEP(cardId, newChecklist);
+    // console.log("newData", newData);
+    dispatch(createNewCheckList(newData))
+    setNewCheckList("");
   };
-  const deleteChecklist = (checkListId) => {
-    deleteChecklistEP(cardId, checkListId, setCheckListData);
+
+  const deleteChecklist = async(checkListId) => {
+   const res =  await deleteChecklistEP(cardId, checkListId);
+   if(res.status === 200){
+    dispatch(deleteCheckList(checkListId))
+   }
   };
   const open = Boolean(anchorEl);
   const isopen = open ? "simple-popover" : undefined;

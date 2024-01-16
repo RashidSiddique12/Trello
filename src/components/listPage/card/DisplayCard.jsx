@@ -1,4 +1,4 @@
-import {  Box, Card, Modal } from "@mui/material";
+import { Box, Card, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import AddCard from "./AddCard";
 import EditCard from "./EditCard";
@@ -8,14 +8,14 @@ import {
   fetchCardDeatailsEP,
   handleArchiveCardEP,
 } from "../../Api";
-
+import { useDispatch } from "react-redux";
+import { displayCheckList } from "../../../redux/checkListSlice";
 
 // eslint-disable-next-line react/prop-types
 function DisplayCard({ listId }) {
   const [cards, setCards] = useState();
   const [openStates, setOpenStates] = useState({});
-  const [checkListData, setCheckListData] = useState([]);
-  // console.log("cards", cards);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     displayCardEP(setCards, listId);
@@ -25,8 +25,10 @@ function DisplayCard({ listId }) {
     handleArchiveCardEP(cardId, setCards, cards);
   };
 
-  const handleOpen = (cardId) => {
-    fetchCardDeatailsEP(cardId, setCheckListData, setOpenStates);
+  const handleOpen = async (cardId) => {
+    const data = await fetchCardDeatailsEP(cardId);
+    console.log("ddd", data)
+    dispatch(displayCheckList(data));
 
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
@@ -44,7 +46,7 @@ function DisplayCard({ listId }) {
   return (
     <>
       {cards &&
-        cards.map(({ id, name}) => (
+        cards.map(({ id, name }) => (
           <div key={id}>
             <Card
               className="listCards"
@@ -59,7 +61,6 @@ function DisplayCard({ listId }) {
                 <p>{name}</p>
                 <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
               </div>
-              {/* <p>{checkItemStates.length}/{badges.checkItems}</p> */}
             </Card>
             <Modal
               open={openStates[id] || false}
@@ -68,8 +69,6 @@ function DisplayCard({ listId }) {
               <Box sx={style}>
                 <OpenCard
                   handleClose={() => handleClose(id)}
-                  setCheckListData={setCheckListData}
-                  checkListData={checkListData}
                   cardId={id}
                   CardName={name}
                 />

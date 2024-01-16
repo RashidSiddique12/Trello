@@ -140,16 +140,13 @@ export const handleArchiveCardEP = (cardId, setCards, cards) => {
     });
 };
 
-export const fetchCardDeatailsEP = (
-  cardId,
-  setCheckListData,
-) => {
-  axios(`/cards/${cardId}/checklists?`, {
+export const fetchCardDeatailsEP = (cardId) => {
+  return axios(`/cards/${cardId}/checklists?`, {
     method: "GET",
   })
     .then((res) => {
-      // console.log(res.data);
-      setCheckListData(res.data);
+      console.log("fetch");
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -157,13 +154,8 @@ export const fetchCardDeatailsEP = (
     });
 };
 
-export const createCheckListEP = (
-  cardId,
-  newChecklist,
-  setCheckListData,
-  checkListData
-) => {
-  axios({
+export const createCheckListEP = (cardId, newChecklist) => {
+  return axios({
     method: "POST",
     url: `/cards/${cardId}/checklists?`,
     data: {
@@ -174,9 +166,8 @@ export const createCheckListEP = (
     },
   })
     .then((res) => {
-      // console.log(res);
-      setCheckListData([...checkListData, res.data]);
       console.log("added successfully");
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -184,16 +175,14 @@ export const createCheckListEP = (
     });
 };
 
-export const deleteChecklistEP = (cardId, checkListId, setCheckListData) => {
-  axios({
+export const deleteChecklistEP = (cardId, checkListId) => {
+  return axios({
     method: "DELETE",
     url: `/cards/${cardId}/checklists/${checkListId}?`,
   })
     .then((res) => {
-      setCheckListData((prevCheckListData) =>
-        prevCheckListData.filter((item) => item.id !== checkListId)
-      );
       console.log("delete successfully");
+      return res;
     })
     .catch((err) => {
       console.log(err);
@@ -201,31 +190,25 @@ export const deleteChecklistEP = (cardId, checkListId, setCheckListData) => {
     });
 };
 
-export const DisplayCheckListItemEP = (id, setChekItems) => {
-  axios(`/checklists/${id}/checkItems?`, {
+export const DisplayCheckListItemEP = (id) => {
+  return axios(`/checklists/${id}/checkItems?`, {
     method: "GET",
   })
     .then((res) => {
-      // console.log(res.data);
-      setChekItems(res.data);
+      // console.log("ddddddasa", res);
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export const handleAddItemEP = (
-  checkListId,
-  newAddItem,
-  setChekItems,
-  checkItems
-) => {
-  axios(`/checklists/${checkListId}/checkItems?name=${newAddItem}`, {
+export const handleAddItemEP = (checkListId, newAddItem) => {
+  return axios(`/checklists/${checkListId}/checkItems?name=${newAddItem}`, {
     method: "POST",
   })
     .then((res) => {
-      console.log(res.data);
-      setChekItems([...checkItems, res.data]);
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -233,17 +216,12 @@ export const handleAddItemEP = (
     });
 };
 
-export const DeleteCheckItemEP = (
-  checkListId,
-  checkItemsId,
-  setChekItems,
-  checkItems
-) => {
-  axios(`/checklists/${checkListId}/checkItems/${checkItemsId}?`, {
+export const DeleteCheckItemEP = (checkListId, checkItemsId) => {
+  return axios(`/checklists/${checkListId}/checkItems/${checkItemsId}?`, {
     method: "DELETE",
   })
-    .then(() => {
-      setChekItems(checkItems.filter((item) => item.id !== checkItemsId));
+    .then((res) => {
+      return res;
     })
     .catch((err) => {
       console.log(err);
@@ -251,27 +229,22 @@ export const DeleteCheckItemEP = (
     });
 };
 
-export const handleCheckBoxEP = (
-  cardId,
-  checkItemId,
-  checkItems,
-  setChekItems,
-  checkItemstate
-) => {
-  axios
+export const handleCheckBoxEP = (cardId, checkItemId, checkItemstate) => {
+  return axios
     .put(`/cards/${cardId}/checkItem/${checkItemId}?`, {
       state: checkItemstate,
     })
     .then((res) => {
-      setChekItems(
-        checkItems.map((checkItem) => {
-          if (checkItem.id === checkItemId) {
-            return { ...checkItem, state: checkItemstate };
-          } else {
-            return checkItem;
-          }
-        })
-      );
+      return res.data;
+      // setChekItems(
+      //   checkItems.map((checkItem) => {
+      //     if (checkItem.id === checkItemId) {
+      //       return { ...checkItem, state: checkItemstate };
+      //     } else {
+      //       return checkItem;
+      //     }
+      //   })
+      // );
     })
     .catch((err) => {
       alert("Internal Error");

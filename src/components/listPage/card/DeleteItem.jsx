@@ -1,9 +1,14 @@
 import { Button, Popover } from "@mui/material";
-import React from "react";
+import { useState } from "react";
 import { DeleteCheckItemEP } from "../../Api";
+import { useDispatch } from "react-redux";
+import { deleteCheckListItem } from "../../../redux/checkListItemSlice";
 
-function DeleteItem({ checkItemsId, checkListId, checkItems, setChekItems }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+// eslint-disable-next-line react/prop-types
+function DeleteItem({ checkItemsId, checkListId }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -13,8 +18,11 @@ function DeleteItem({ checkItemsId, checkListId, checkItems, setChekItems }) {
   };
   const open = Boolean(anchorEl);
 
-  const DeleteCheckItem = () => {
-    DeleteCheckItemEP(checkListId, checkItemsId, setChekItems, checkItems);
+  const DeleteCheckItem = async() => {
+    const res = await DeleteCheckItemEP(checkListId, checkItemsId);
+    if(res.status === 200){
+      dispatch(deleteCheckListItem(checkItemsId))
+    }
   };
   return (
     <div>
