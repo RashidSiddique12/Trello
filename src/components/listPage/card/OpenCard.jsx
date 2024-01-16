@@ -15,17 +15,12 @@ import DeleteCheckList from "./DeleteCheckList";
 import DisplayCheckListItem from "./DisplayCheckListItem";
 import { createCheckListEP, deleteChecklistEP } from "../../Api";
 
-
-function OpenCard({
-  cardId,
-  handleClose,
-  setCheckListData,
-  checkListData,
-  CardName,
-}) {
+// eslint-disable-next-line react/prop-types
+function OpenCard({ cardId, handleClose, state, dispatch, CardName }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [newChecklist, setNewCheckList] = useState("");
-  // console.log(checkListData);
+
+  // eslint-disable-next-line react/prop-types
+  const { checkListData, newChecklist } = state;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,16 +30,24 @@ function OpenCard({
     setAnchorEl(null);
   };
 
-  const createCheckList = (e) => {
+  const createCheckList = async (e) => {
     e.preventDefault();
     if (newChecklist !== "") {
-      createCheckListEP(cardId, newChecklist, setCheckListData, checkListData);
-
-      setNewCheckList("");
+      const newCheckListData = await createCheckListEP(cardId, newChecklist);
+      dispatch({
+        type: "addNewCheckList",
+        payload: newCheckListData,
+      });
     }
   };
-  const deleteChecklist = (checkListId) => {
-    deleteChecklistEP(cardId, checkListId, setCheckListData);
+  const deleteChecklist = async (checkListId) => {
+    const res = await deleteChecklistEP(cardId, checkListId);
+    if (res.status === 200) {
+      dispatch({
+        type: "deleteCheckList",
+        payload: checkListId,
+      });
+    }
   };
   const open = Boolean(anchorEl);
   const isopen = open ? "simple-popover" : undefined;
@@ -59,9 +62,12 @@ function OpenCard({
       </div>
       <div className="openCardBody">
         <div className="left">
-          <Typography>CheckList Items</Typography>
+          <Typography>
+            CheckList Items
+          </Typography>
 
           {checkListData &&
+            // eslint-disable-next-line react/prop-types
             checkListData.map(({ id, name }) => {
               return (
                 <Card sx={{ boxShadow: "none" }} key={id}>
@@ -116,18 +122,17 @@ function OpenCard({
                       type="text"
                       placeholder="Enter the title of a card"
                       value={newChecklist}
-                      onChange={(e) => setNewCheckList(e.target.value)}
-                      autoFocus={true}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "NewChecklist",
+                          payload: e.target.value,
+                        })
+                      }
                     />
                     <br />
                     <br />
                     <div className="CardFormBottom">
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        size="small"
-                        disabled={newChecklist.trim() !== "" ? false : true}
-                      >
+                      <Button type="submit" variant="contained" size="small">
                         Add CheckList
                       </Button>
                       <CloseIcon onClick={handleCloseAddChecklist} />

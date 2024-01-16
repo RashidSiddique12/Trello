@@ -1,17 +1,32 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import DeleteItem from "./DeleteItem";
 import AddItem from "./AddItem";
 import { DisplayCheckListItemEP, handleCheckBoxEP } from "../../Api";
 import { BorderLinearProgress } from "./ProgressLine";
+import { checkListItemReducer } from "../../reducer/checkListItemReducer";
+
+const intialState = {
+  checkItems: [],
+  newAddItem: "",
+};
 
 // eslint-disable-next-line react/prop-types
-function DisplayCheckListItem({ id, cardId}) {
-  const [checkItems, setChekItems] = useState([]);
+function DisplayCheckListItem({ id, cardId }) {
+  const [state, dispatch] = useReducer(checkListItemReducer, intialState);
+  const { checkItems } = state;
   const [progress, setProgress] = useState(0);
 
+  const fetchData = async () => {
+    const itemData = await DisplayCheckListItemEP(id);
+    dispatch({
+      type: "displayCheckListItem",
+      payload: itemData,
+    });
+  };
+
   useEffect(() => {
-    DisplayCheckListItemEP(id, setChekItems);
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -19,16 +34,13 @@ function DisplayCheckListItem({ id, cardId}) {
     setProgress(((checkedNo.length / checkItems.length) * 100).toFixed(2));
   }, [checkItems]);
 
-
-  const handleCheckBox = (checkItemId, state) => {
+  const handleCheckBox = async (checkItemId, state) => {
     const checkItemstate = state === "complete" ? "incomplete" : "complete";
-    handleCheckBoxEP(
-      cardId,
-      checkItemId,
-      checkItems,
-      setChekItems,
-      checkItemstate
-    );
+    const itemId = await handleCheckBoxEP(cardId, checkItemId, checkItemstate);
+    dispatch({
+      type: "handleCheckBox",
+      payload: { checkItemId: itemId, checkItemstate: checkItemstate },
+    });
   };
 
   return (
@@ -55,16 +67,11 @@ function DisplayCheckListItem({ id, cardId}) {
           <DeleteItem
             checkItemsId={item.id}
             checkListId={id}
-            checkItems={checkItems}
-            setChekItems={setChekItems}
+            dispatch={dispatch}
           />
         </div>
       ))}
-      <AddItem
-        checkListId={id}
-        checkItems={checkItems}
-        setChekItems={setChekItems}
-      />
+      <AddItem checkListId={id} state={state} dispatch={dispatch} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import {  Box, Card, Modal } from "@mui/material";
+import { Box, Card, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import AddCard from "./AddCard";
 import EditCard from "./EditCard";
@@ -8,14 +8,19 @@ import {
   fetchCardDeatailsEP,
   handleArchiveCardEP,
 } from "../../Api";
+import { useReducer } from "react";
+import { checkListReducer } from "../../reducer/checkListReducer";
 
+const initialState = {
+  checkListData: [],
+  newChecklist: "",
+};
 
 // eslint-disable-next-line react/prop-types
 function DisplayCard({ listId }) {
-  const [cards, setCards] = useState();
+  const [cards, setCards] = useState("");
   const [openStates, setOpenStates] = useState({});
-  const [checkListData, setCheckListData] = useState([]);
-  // console.log("cards", cards);
+  const [state, dispatch] = useReducer(checkListReducer, initialState);
 
   useEffect(() => {
     displayCardEP(setCards, listId);
@@ -25,14 +30,20 @@ function DisplayCard({ listId }) {
     handleArchiveCardEP(cardId, setCards, cards);
   };
 
-  const handleOpen = (cardId) => {
-    fetchCardDeatailsEP(cardId, setCheckListData, setOpenStates);
+  const handleOpen = async (cardId) => {
+    const data = await fetchCardDeatailsEP(cardId);
+
+    dispatch({
+      type: "displayCheckList",
+      payload: data,
+    });
 
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
       [cardId]: true,
     }));
   };
+
   const handleClose = (cardId) => {
     // Update the specific card's open state
     setOpenStates((prevOpenStates) => ({
@@ -44,7 +55,7 @@ function DisplayCard({ listId }) {
   return (
     <>
       {cards &&
-        cards.map(({ id, name}) => (
+        cards.map(({ id, name }) => (
           <div key={id}>
             <Card
               className="listCards"
@@ -59,7 +70,6 @@ function DisplayCard({ listId }) {
                 <p>{name}</p>
                 <EditCard handleArchiveCard={() => handleArchiveCard(id)} />
               </div>
-              {/* <p>{checkItemStates.length}/{badges.checkItems}</p> */}
             </Card>
             <Modal
               open={openStates[id] || false}
@@ -68,8 +78,8 @@ function DisplayCard({ listId }) {
               <Box sx={style}>
                 <OpenCard
                   handleClose={() => handleClose(id)}
-                  setCheckListData={setCheckListData}
-                  checkListData={checkListData}
+                  state={state}
+                  dispatch={dispatch}
                   cardId={id}
                   CardName={name}
                 />
@@ -90,7 +100,6 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
-  border: "none",
   bgcolor: "background.paper",
   borderRadius: "25px",
   boxShadow: 24,

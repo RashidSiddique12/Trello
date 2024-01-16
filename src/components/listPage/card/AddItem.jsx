@@ -3,21 +3,22 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleAddItemEP } from "../../Api";
 
-
 // eslint-disable-next-line react/prop-types
-function AddItem({ checkListId, checkItems, setChekItems }) {
+function AddItem({ checkListId, state, dispatch }) {
   const [add, setAdd] = useState(false);
-  const [newAddItem, setNewAddItem] = useState("");
 
-  // console.log("tttttttt", checkListId);
+  // eslint-disable-next-line react/prop-types
+  const { newAddItem } = state;
 
-  const handleAddItem = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
-    console.log(checkListId);
     if (newAddItem !== "") {
-      handleAddItemEP(checkListId, newAddItem, setChekItems, checkItems);
+      const newItem = await handleAddItemEP(checkListId, newAddItem);
+      dispatch({
+        type: "addNewItem",
+        payload: newItem,
+      });
 
-      setNewAddItem("");
     }
   };
 
@@ -29,15 +30,15 @@ function AddItem({ checkListId, checkItems, setChekItems }) {
             type="text"
             placeholder="Enter the title of a card"
             value={newAddItem}
-            onChange={(e) => setNewAddItem(e.target.value)}
-            autoFocus={true}
+            onChange={(e) => dispatch({
+              type : "newItem",
+              payload : e.target.value
+            })}
           />
           <br />
           <br />
           <div className="CardFormBottom">
-            <Button type="submit" variant="contained" size="small"
-             disabled={newAddItem.trim() !== "" ? false : true}
-           >
+            <Button type="submit" variant="contained" size="small">
               Add Item
             </Button>
             <CloseIcon onClick={() => setAdd(false)} />

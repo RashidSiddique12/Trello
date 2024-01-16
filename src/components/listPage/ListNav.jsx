@@ -10,7 +10,7 @@ function ListNav({boardName}) {
           <Link to="/"><Button variant="contained" id='backbtn'><KeyboardBackspaceIcon/> Back</Button></Link>
           <Typography  variant='h5' id='typo'>{boardName}</Typography>
           <Typography  variant='h6' id='typo'>
-          <img src="https://trello.com/assets/87e1af770a49ce8e84e3.gif" alt="" width={100} />
+          <Link to="/"><img src="https://trello.com/assets/87e1af770a49ce8e84e3.gif" alt="" width={100} /></Link>
           </Typography>
         </Toolbar>
       </AppBar>

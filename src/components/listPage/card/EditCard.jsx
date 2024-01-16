@@ -36,9 +36,6 @@ function EditCard({handleArchiveCard}) {
         }}
       >
         <List>
-          {/* <ListItemButton>
-            <ListItemText primary="Open Card" />
-          </ListItemButton> */}
           <ListItemButton onClick={handleArchiveCard}>
             <ListItemText primary="Archive" />
           </ListItemButton>
