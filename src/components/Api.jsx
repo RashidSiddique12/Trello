@@ -143,7 +143,6 @@ export const handleArchiveCardEP = (cardId, setCards, cards) => {
 export const fetchCardDeatailsEP = (
   cardId,
   setCheckListData,
-  setOpenStates
 ) => {
   axios(`/cards/${cardId}/checklists?`, {
     method: "GET",
