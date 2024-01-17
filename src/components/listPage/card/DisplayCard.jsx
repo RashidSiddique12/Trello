@@ -11,18 +11,22 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { displayCheckList } from "../../../redux/checkListSlice";
 import { deleteCard, displayCards } from "../../../redux/cardSlice";
+import LoadingElement from "../../handlers/LoadingElement";
 
 // eslint-disable-next-line react/prop-types
 function DisplayCard({ listId }) {
   const [openStates, setOpenStates] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const { cards } = useSelector((state) => state.card);
-  console.log("Cardss", cards);
+  // console.log("Cardss", cards);
 
   const fetchCardData = async () => {
     const cardData = await displayCardEP(listId);
     // console.log("fetch", cardData);
     dispatch(displayCards(cardData));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function DisplayCard({ listId }) {
 
   const handleOpen = async (cardId) => {
     const data = await fetchCardDeatailsEP(cardId);
-    console.log("ddd", data);
+    // console.log("ddd", data);
     dispatch(displayCheckList(data));
 
     setOpenStates((prevOpenStates) => ({
@@ -54,7 +58,9 @@ function DisplayCard({ listId }) {
     }));
   };
 
-  return (
+  return loading ? (
+    <LoadingElement />
+  ) : (
     <>
       {cards &&
         cards.map(({ id, name, idList }) => {

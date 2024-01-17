@@ -21,7 +21,7 @@ function ListPage() {
   // const [listData, setListData] = useState();
   const dispatch = useDispatch();
   const {listData} =  useSelector(state => state.list)
-  console.log("ssf", listData)
+  // console.log("ssf", listData)
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");

@@ -98,6 +98,7 @@ export const displayCardEP = (listId) => {
     })
     .catch((err) => {
       console.log(err);
+      alert("some thing went")
     });
 };
 
@@ -142,12 +143,12 @@ export const fetchCardDeatailsEP = (cardId) => {
     method: "GET",
   })
     .then((res) => {
-      console.log("fetch");
+      // console.log("fetch");
       return res.data;
     })
     .catch((err) => {
       console.log(err);
-      // alert("Internal Error");
+      alert("Internal Error");
     });
 };
 
@@ -233,17 +234,9 @@ export const handleCheckBoxEP = (cardId, checkItemId, checkItemstate) => {
     })
     .then((res) => {
       return res.data;
-      // setChekItems(
-      //   checkItems.map((checkItem) => {
-      //     if (checkItem.id === checkItemId) {
-      //       return { ...checkItem, state: checkItemstate };
-      //     } else {
-      //       return checkItem;
-      //     }
-      //   })
-      // );
     })
     .catch((err) => {
-      alert("Internal Error");
+      // alert("Internal Error");
+      console.log(err);
     });
 };
