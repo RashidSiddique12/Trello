@@ -5,13 +5,23 @@ import LoadingPage from "../handlers/LoadingPage";
 import ErrorPage from "../handlers/ErrorPage";
 import { Link } from "react-router-dom";
 import { displayBoardEP } from "../Api";
+import { useDispatch, useSelector } from "react-redux";
+import { displayBoard } from "../../redux/boardSlice";
 
 function DisplayBoards() {
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
+  const dispatch = useDispatch();
+  const {boardData} = useSelector(state => state.board)
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const fetchBoard = async()=>{
+    const data = await displayBoardEP(setIsLoading, setError);
+    dispatch(displayBoard(data))
+  }
+
   useEffect(() => {
-    displayBoardEP(setData, setIsLoading, setError);
+    fetchBoard();
   }, []);
 
   return error !== "" ? (
@@ -26,10 +36,10 @@ function DisplayBoards() {
         </Typography>
         <Grid container spacing={2}>
           <Grid item>
-            <CreateNewBoard data={data} setData={setData} />
+            <CreateNewBoard/>
           </Grid>
-          {data &&
-            data.map(({ id, name, prefs }) => {
+          {boardData &&
+            boardData.map(({ id, name, prefs }) => {
               return (
                 <Grid item key={id}>
                   <Link

@@ -9,17 +9,16 @@ axios.defaults.params = {
   key: apiKey,
   token: apiToken,
 };
-export const displayBoardEP = (setData, setIsLoading, setError) => {
-  axios(`/members/me/boards?`, {
+export const displayBoardEP = (setIsLoading, setError) => {
+  return axios(`/members/me/boards?`, {
     method: "GET",
     headers: {
       Accept: "application/json",
     },
   })
     .then((res) => {
-      // console.log(res.data);
-      setData(res.data);
       setIsLoading(false);
+      return res.data;
     })
     .catch((err) => {
       setIsLoading(false);
@@ -27,23 +26,22 @@ export const displayBoardEP = (setData, setIsLoading, setError) => {
     });
 };
 
-export const createBoardEP = (data, setData, newBoardName, setNewBoardName) => {
-  axios(`/boards/?name=${newBoardName}`, {
+export const createBoardEP = (newBoardName) => {
+  return axios(`/boards/?name=${newBoardName}`, {
     method: "POST",
   })
-    .then((response) => {
+    .then((res) => {
       //   console.log(`Response: ${response.status} ${response.statusText}`);
-      console.log(response.data);
-      setData([...data, response.data]);
-      setNewBoardName("");
+      // console.log(response.data);
+      return res.data;
     })
     .catch((err) => {
       alert("Internal Error");
     });
 };
 
-export const displayListPageEP = (id, setListData, setIsLoading, setError) => {
-  axios(`/boards/${id}/lists?`, {
+export const displayListPageEP = (id, setIsLoading, setError) => {
+  return axios(`/boards/${id}/lists?`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -51,8 +49,8 @@ export const displayListPageEP = (id, setListData, setIsLoading, setError) => {
   })
     .then((res) => {
       // console.log(res.data);
-      setListData(res.data);
       setIsLoading(false);
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -61,22 +59,21 @@ export const displayListPageEP = (id, setListData, setIsLoading, setError) => {
     });
 };
 
-export const handleAddlistEP = (newList, boardId, listData, setListData) => {
-  axios(`/lists?name=${newList}&idBoard=${boardId}`, {
+export const handleAddlistEP = (newList, boardId) => {
+  return axios(`/lists?name=${newList}&idBoard=${boardId}`, {
     method: "POST",
   })
     .then((res) => {
-      setListData([...listData, res.data]);
-      // setNewList("");
       console.log("list created");
+      return res.data;
     })
     .catch((err) => {
       alert("Internal Error");
     });
 };
 
-export const handleArchiveListEP = (listId, setListData, listData) => {
-  axios({
+export const handleArchiveListEP = (listId) => {
+  return axios({
     method: "PUT",
     url: `/lists/${listId}/closed?`,
     data: {
@@ -85,7 +82,7 @@ export const handleArchiveListEP = (listId, setListData, listData) => {
   })
     .then((res) => {
       // console.log(res.data);
-      setListData(listData.filter((list) => list.id !== listId));
+      return res;
     })
     .catch((err) => {
       console.log(err);
@@ -93,19 +90,19 @@ export const handleArchiveListEP = (listId, setListData, listData) => {
     });
 };
 
-export const displayCardEP = (setCards, listId) => {
-  axios(`/lists/${listId}/cards?`)
+export const displayCardEP = (listId) => {
+  return axios(`/lists/${listId}/cards?`)
     .then((res) => {
-      setCards(res.data);
       // console.log(res.data);
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export const handleAddCardEP = (listId, newCard, setCards, cards) => {
-  axios({
+export const handleAddCardEP = (listId, newCard) => {
+  return axios({
     method: "POST",
     url: `/cards?idList=${listId}`,
     data: {
@@ -117,8 +114,8 @@ export const handleAddCardEP = (listId, newCard, setCards, cards) => {
   })
     .then((res) => {
       // console.log(res);
-      setCards([...cards, res.data]);
       console.log("added successfully");
+      return res.data;
     })
     .catch((err) => {
       console.log(err);
@@ -126,13 +123,13 @@ export const handleAddCardEP = (listId, newCard, setCards, cards) => {
     });
 };
 
-export const handleArchiveCardEP = (cardId, setCards, cards) => {
-  axios(`/cards/${cardId}?`, {
+export const handleArchiveCardEP = (cardId) => {
+  return axios(`/cards/${cardId}?`, {
     method: "DELETE",
   })
     .then((res) => {
       // console.log(res);
-      setCards(cards.filter((card) => card.id !== cardId));
+      return res;
     })
     .catch((err) => {
       console.log(err);

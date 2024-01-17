@@ -6,11 +6,23 @@ import {
   Popover,
 } from "@mui/material";
 import { useState } from "react";
+import { handleArchiveListEP } from "../Api";
+import { deleteList } from "../../redux/ListSlice";
+import { useDispatch } from "react-redux";
 
-function ListAction({ handleArchive, listId }) {
+// eslint-disable-next-line react/prop-types
+function ListAction({listId }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleArchive = async() => {
+    const res = await handleArchiveListEP(listId);
+    if(res.status == 200){
+      dispatch(deleteList(listId))
+    }
   };
 
   const handleClose = () => {
@@ -33,7 +45,7 @@ function ListAction({ handleArchive, listId }) {
       >
         <div>
           <List className="listAction">
-            <ListItemButton onClick={() => handleArchive(listId)}>
+            <ListItemButton onClick={handleArchive}>
               <ListItemText primary="Archive this list" />
             </ListItemButton>
           </List>

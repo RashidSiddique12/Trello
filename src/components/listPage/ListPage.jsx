@@ -8,7 +8,9 @@ import CreateNewList from "./CreateNewList";
 import ListAction from "./ListAction";
 import DisplayCard from "./card/DisplayCard";
 import { useLocation } from "react-router-dom";
-import { displayListPageEP, handleArchiveListEP } from "../Api";
+import { displayListPageEP} from "../Api";
+import { useDispatch, useSelector } from "react-redux";
+import {displayList } from "../../redux/ListSlice";
 
 function ListPage() {
   const location = useLocation();
@@ -16,18 +18,24 @@ function ListPage() {
   const boardName = state?.BoardName || "Trello";
 
   const { id } = useParams();
-  const [listData, setListData] = useState();
+  // const [listData, setListData] = useState();
+  const dispatch = useDispatch();
+  const {listData} =  useSelector(state => state.list)
+  console.log("ssf", listData)
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  //   console.log(id);
+  const fetchList = async()=>{
+    const listData = await displayListPageEP(id,setIsLoading, setError);
+    dispatch(displayList(listData))
+  }
+
   useEffect(() => {
-    displayListPageEP(id, setListData, setIsLoading, setError);
+    fetchList()
   }, []);
 
-  const handleArchive = (listId) => {
-    handleArchiveListEP(listId, setListData, listData);
-  };
+
 
   return (
     <div>
@@ -47,7 +55,7 @@ function ListPage() {
                       <CardContent className="listCardContent">
                         {" "}
                         <p>{name}</p>
-                        <ListAction handleArchive={handleArchive} listId={id} />
+                        <ListAction listId={id} />
                       </CardContent>
                       <DisplayCard listId={id} />
                     </Card>
@@ -55,8 +63,6 @@ function ListPage() {
                 ))}
                 <div>
                   <CreateNewList
-                    listData={listData}
-                    setListData={setListData}
                     boardId={id}
                   />
                 </div>

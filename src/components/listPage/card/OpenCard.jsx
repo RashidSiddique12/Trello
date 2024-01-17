@@ -77,7 +77,7 @@ function OpenCard({ cardId, handleClose, CardName }) {
                     />
                   </div>
                   <div className="progress"></div>
-                  <DisplayCheckListItem id={id} cardId={cardId} />
+                  <DisplayCheckListItem checkListId={id} cardId={cardId} />
                 </Card>
               );
             })}

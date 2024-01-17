@@ -10,7 +10,16 @@ export const checkListItemSlice = createSlice({
   initialState,
   reducers: {
     displayCheckListItem: (state, action) => {
-      state.checkListItemData = action.payload;
+      const uniqueNewItem = action.payload.filter(
+        (newItem) =>
+          !state.checkListItemData.some((existingItem) => existingItem.id === newItem.id)
+      );
+
+      return {
+        ...state,
+        checkListItemData: [...state.checkListItemData, ...uniqueNewItem],
+        // checkListItemData: [...state.checkListItemData, action.payload],
+      };
     },
     createNewCheckListItem: (state, action) => {
       state.checkListItemData.push(action.payload);

@@ -3,16 +3,20 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleAddCardEP } from "../../Api";
+import { useDispatch } from "react-redux";
+import { createNewCard } from "../../../redux/cardSlice";
 
 // eslint-disable-next-line react/prop-types
-function AddCard({ listId, cards, setCards }) {
+function AddCard({ listId }) {
   const [openTextField, setOpenTextField] = useState(false);
   const [newCard, setNewCard] = useState("");
+  const dispatch = useDispatch();
 
-  const handleAddCard = (e) => {
+  const handleAddCard = async (e) => {
     e.preventDefault();
-
-    handleAddCardEP(listId, newCard, setCards, cards);
+    
+    const newCardData = await handleAddCardEP(listId, newCard);
+    dispatch(createNewCard(newCardData));
 
     setOpenTextField(false);
     setNewCard("");

@@ -11,15 +11,15 @@ import {
 } from "../../../redux/checkListItemSlice";
 
 // eslint-disable-next-line react/prop-types
-function DisplayCheckListItem({ id, cardId }) {
-  // const [checkItems, setChekItems] = useState([]);
+function DisplayCheckListItem({ checkListId, cardId }) {
   const [progress, setProgress] = useState(0);
   const dispatch = useDispatch();
   const { checkListItemData } = useSelector((state) => state.checkListItem);
-  // console.log("iiiiiiiiiiii", checkListItemData)
+
+  console.log("item", checkListItemData);
 
   const fetchItemData = async () => {
-    const itemData = await DisplayCheckListItemEP(id);
+    const itemData = await DisplayCheckListItemEP(checkListId);
     dispatch(displayCheckListItem(itemData));
   };
 
@@ -54,23 +54,27 @@ function DisplayCheckListItem({ id, cardId }) {
         />
       </div>
       {checkListItemData &&
-        checkListItemData.map((item) => (
-          <div key={item.id} className="checkListItem">
-            <FormGroup sx={{ display: "flex" }}>
-              <FormControlLabel
-                onClick={() => handleItemCheckBox(item.id, item.state)}
-                control={
-                  <Checkbox
-                    checked={item.state === "complete" ? true : false}
+        checkListItemData.map((item) => {
+          if (item.idChecklist === checkListId) {
+            return (
+              <div key={item.id} className="checkListItem">
+                <FormGroup sx={{ display: "flex" }}>
+                  <FormControlLabel
+                    onClick={() => handleItemCheckBox(item.id, item.state)}
+                    control={
+                      <Checkbox
+                        checked={item.state === "complete" ? true : false}
+                      />
+                    }
+                    label={item.name}
                   />
-                }
-                label={item.name}
-              />
-            </FormGroup>
-            <DeleteItem checkItemsId={item.id} checkListId={id} />
-          </div>
-        ))}
-      <AddItem checkListId={id} />
+                </FormGroup>
+                <DeleteItem checkItemsId={item.id} checkListId={checkListId} />
+              </div>
+            );
+          }
+        })}
+      <AddItem checkListId={checkListId} />
     </div>
   );
 }

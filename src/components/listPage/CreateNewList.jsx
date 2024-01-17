@@ -2,19 +2,20 @@ import { Button, Card, CardContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { handleAddlistEP } from "../Api";
-
+import { useDispatch } from "react-redux";
+import { createNewList } from "../../redux/ListSlice";
 
 // eslint-disable-next-line react/prop-types
-function CreateNewList({ boardId, listData, setListData }) {
+function CreateNewList({ boardId }) {
   const [addList, setAddList] = useState(false);
   const [newList, setNewList] = useState("");
+  const dispatch = useDispatch();
 
-  const handleAddlist = (e) => {
+  const handleAddlist = async(e) => {
     e.preventDefault();
-    if (newList !== "") {
-      handleAddlistEP(newList, boardId, listData, setListData);
-      setNewList("");
-    }
+    const newData = await handleAddlistEP(newList, boardId);
+    dispatch(createNewList(newData))
+    setNewList("");
     setAddList(false);
   };
   return (
@@ -33,8 +34,11 @@ function CreateNewList({ boardId, listData, setListData }) {
               <br />
               <br />
               <div className="CardFormBottom">
-                <Button type="submit" variant="contained" size="small"
-                disabled={newList.trim() !== "" ? false : true}
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="small"
+                  disabled={newList.trim() !== "" ? false : true}
                 >
                   Add list
                 </Button>
