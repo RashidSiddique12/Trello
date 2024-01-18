@@ -10,6 +10,7 @@ export const cardSlice = createSlice({
   reducers: {
     displayCards: (state, action) => {
       // Assuming action.payload is an array of cards
+      console.log("red", action.payload)
       const uniqueNewCards = action.payload.filter(
         (newCard) => !state.cards.some((existingCard) => existingCard.id === newCard.id)
       );
