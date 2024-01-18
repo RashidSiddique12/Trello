@@ -34,7 +34,6 @@ function DisplayCard({ listId }) {
     }));
   };
   const handleClose = (cardId) => {
-    // Update the specific card's open state
     setOpenStates((prevOpenStates) => ({
       ...prevOpenStates,
       [cardId]: false,
