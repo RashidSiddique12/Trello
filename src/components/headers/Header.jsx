@@ -2,8 +2,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SearchIcon from "@mui/icons-material/Search";
-import { Search, SearchIconWrapper, StyledInputBase } from "./style";
+// import SearchIcon from "@mui/icons-material/Search";
+// import { Search, SearchIconWrapper, StyledInputBase } from "./style";
 
 export default function Header() {
   return (

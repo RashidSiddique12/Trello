@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { displayBoard } from "../../redux/boardSlice";
 
 function DisplayBoards() {
-  // const [data, setData] = useState();
   const dispatch = useDispatch();
   const {boardData} = useSelector(state => state.board)
   const [isLoading, setIsLoading] = useState(true);
