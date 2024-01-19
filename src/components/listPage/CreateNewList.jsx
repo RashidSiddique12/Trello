@@ -1,22 +1,19 @@
 import { Button, Card, CardContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
 import { handleAddlistEP } from "../Api";
-import { useDispatch } from "react-redux";
-import { createNewList } from "../../redux/ListSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createNewList, setAddList, setNewList } from "../../redux/ListSlice";
 
 // eslint-disable-next-line react/prop-types
 function CreateNewList({ boardId }) {
-  const [addList, setAddList] = useState(false);
-  const [newList, setNewList] = useState("");
+
   const dispatch = useDispatch();
+  const {newList, addList} = useSelector((state) => state.list);
 
   const handleAddlist = async(e) => {
     e.preventDefault();
     const newData = await handleAddlistEP(newList, boardId);
     dispatch(createNewList(newData))
-    setNewList("");
-    setAddList(false);
   };
   return (
     <div>
@@ -28,7 +25,7 @@ function CreateNewList({ boardId }) {
                 type="text"
                 placeholder="Enter the list title"
                 value={newList}
-                onChange={(e) => setNewList(e.target.value)}
+                onChange={(e) => dispatch(setNewList(e.target.value))}
                 autoFocus={true}
               />
               <br />
@@ -42,13 +39,13 @@ function CreateNewList({ boardId }) {
                 >
                   Add list
                 </Button>
-                <CloseIcon onClick={() => setAddList(false)} />
+                <CloseIcon onClick={() => dispatch(setAddList(false))} />
               </div>
             </form>
           </CardContent>
         </Card>
       ) : (
-        <Card onClick={() => setAddList(true)}>
+        <Card onClick={() => dispatch(setAddList(true))}>
           <CardContent sx={{ minWidth: 275 }}>
             <Button size="small">+ Add Another List</Button>
           </CardContent>

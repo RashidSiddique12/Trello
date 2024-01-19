@@ -9,54 +9,28 @@ axios.defaults.params = {
   key: apiKey,
   token: apiToken,
 };
-export const displayBoardEP = (setIsLoading, setError) => {
+export const displayBoardEP = () => {
   return axios(`/members/me/boards?`, {
     method: "GET",
     headers: {
       Accept: "application/json",
     },
   })
-    .then((res) => {
-      setIsLoading(false);
-      return res.data;
-    })
-    .catch((err) => {
-      setIsLoading(false);
-      setError(err.message);
-    });
 };
 
 export const createBoardEP = (newBoardName) => {
   return axios(`/boards/?name=${newBoardName}`, {
     method: "POST",
   })
-    .then((res) => {
-      //   console.log(`Response: ${response.status} ${response.statusText}`);
-      // console.log(response.data);
-      return res.data;
-    })
-    .catch((err) => {
-      alert("Internal Error");
-    });
 };
 
-export const displayListPageEP = (id, setIsLoading, setError) => {
+export const displayListPageEP = (id) => {
   return axios(`/boards/${id}/lists?`, {
     method: "GET",
     headers: {
       Accept: "application/json",
     },
   })
-    .then((res) => {
-      // console.log(res.data);
-      setIsLoading(false);
-      return res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsLoading(false);
-      setError(err.message);
-    });
 };
 
 export const handleAddlistEP = (newList, boardId) => {
@@ -164,7 +138,7 @@ export const createCheckListEP = (cardId, newChecklist) => {
     },
   })
     .then((res) => {
-      console.log("added successfully");
+      // console.log("added successfully");
       return res.data;
     })
     .catch((err) => {
@@ -193,7 +167,6 @@ export const DisplayCheckListItemEP = (id) => {
     method: "GET",
   })
     .then((res) => {
-      // console.log("ddddddasa", res);
       return res.data;
     })
     .catch((err) => {

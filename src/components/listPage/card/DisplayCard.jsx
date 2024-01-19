@@ -19,13 +19,11 @@ function DisplayCard({ listId }) {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const { cards } = useSelector((state) => state.card);
-  // console.log("Cardss", cards);
+  const cards = useSelector((state)=> state.card.cards[listId])
 
   const fetchCardData = async () => {
     const cardData = await displayCardEP(listId);
-    // console.log("fetch", cardData);
-    dispatch(displayCards(cardData));
+    dispatch(displayCards({listId, cardData}));
     setLoading(false);
   };
 
@@ -36,13 +34,12 @@ function DisplayCard({ listId }) {
   const handleArchiveCard = async (cardId) => {
     const res = await handleArchiveCardEP(cardId);
     if (res.status === 200) {
-      dispatch(deleteCard(cardId));
+      dispatch(deleteCard({listId, cardId}));
     }
   };
 
   const handleOpen = async (cardId) => {
     const data = await fetchCardDeatailsEP(cardId);
-    // console.log("ddd", data);
     dispatch(displayCheckList(data));
 
     setOpenStates((prevOpenStates) => ({
@@ -63,8 +60,7 @@ function DisplayCard({ listId }) {
   ) : (
     <>
       {cards &&
-        cards.map(({ id, name, idList }) => {
-          if (listId === idList) {
+        cards.map(({ id, name}) => {
             return (
               <div key={id}>
                 <Card
@@ -95,7 +91,6 @@ function DisplayCard({ listId }) {
                 </Modal>
               </div>
             );
-          }
         })}
       <AddCard listId={listId} />
     </>

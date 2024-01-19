@@ -2,32 +2,32 @@ import { Button, Card, CardContent } from "@mui/material";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { handleAddItemEP } from "../../Api";
-import { useDispatch } from "react-redux";
-import { createNewCheckListItem } from "../../../redux/checkListItemSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createNewCheckListItem, setNewItem,} from "../../../redux/checkListItemSlice";
 
 // eslint-disable-next-line react/prop-types
 function AddItem({ checkListId }) {
-  const [add, setAdd] = useState(false);
-  const [newAddItem, setNewAddItem] = useState("");
+  // const {newItem} = useSelector(state => state.checkListItem);
   const dispatch = useDispatch();
+  const [openInput, setOpenInput] = useState(false);
+  const [newItem,setNewItem ] = useState("")
 
   const handleAddItem = async (e) => {
     e.preventDefault();
-    const newItemData = await handleAddItemEP(checkListId, newAddItem);
-    dispatch(createNewCheckListItem(newItemData));
-
-    setNewAddItem("");
+    const newItemData = await handleAddItemEP(checkListId, newItem);
+    dispatch(createNewCheckListItem({newItemData,checkListId }));
+    setNewItem("");
   };
 
-  return add ? (
+  return openInput ? (
     <Card className="addCard">
       <CardContent>
         <form onSubmit={handleAddItem} className="Cardform">
           <input
             type="text"
             placeholder="Enter the title of a card"
-            value={newAddItem}
-            onChange={(e) => setNewAddItem(e.target.value)}
+            value={newItem}
+            onChange={(e) => setNewItem(e.target.value)}
             autoFocus={true}
           />
           <br />
@@ -37,18 +37,19 @@ function AddItem({ checkListId }) {
               type="submit"
               variant="contained"
               size="small"
-              disabled={newAddItem.trim() !== "" ? false : true}
+              disabled={newItem.trim() !== "" ? false : true}
             >
               Add Item
             </Button>
-            <CloseIcon onClick={() => setAdd(false)} />
+  
+            <CloseIcon onClick={() => setOpenInput(false)} />
           </div>
         </form>
       </CardContent>
     </Card>
   ) : (
     <div>
-      <Button variant="contained" onClick={() => setAdd(true)}>
+      <Button variant="contained" onClick={() => setOpenInput(true)}>
         Add Item
       </Button>
     </div>

@@ -7,29 +7,32 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { createBoardEP } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewBoard } from "../../redux/boardSlice";
+import {
+  createNewBoard,
+  setNewBoardName,
+  setOpenBox,
+} from "../../redux/boardSlice";
 
 function CreateNewBoard() {
-  const [open, setOpen] = useState(false);
-  const [newBoardName, setNewBoardName] = useState("");
   const dispatch = useDispatch();
-  const {boardData} = useSelector(state => state.board)
-  console.log("bbb",boardData)
+  const { boardData, newBoardName, open } = useSelector((state) => state.board);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => dispatch(setOpenBox(true));
+  const handleClose = () => dispatch(setOpenBox(false));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(newBoardName);
-    const newData = await createBoardEP(newBoardName);
-    dispatch(createNewBoard(newData));
-
-    setNewBoardName("");
-    handleClose();
+    try {
+      const newData = await createBoardEP(newBoardName);
+      dispatch(createNewBoard(newData.data));
+    } catch (error) {
+      alert("Internal Error");
+    } finally {
+      handleClose();
+    }
   };
   return (
     <div>
@@ -59,10 +62,9 @@ function CreateNewBoard() {
               label="Board Title"
               value={newBoardName}
               autoFocus={open}
-              onChange={(e) => setNewBoardName(e.target.value)}
+              onChange={(e) => dispatch(setNewBoardName(e.target.value))}
             />
             <Button
-              // onClick={handleSubmit}
               type="submit"
               sx={{ marginTop: "1rem" }}
               variant="contained"

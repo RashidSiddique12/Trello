@@ -1,5 +1,5 @@
 import { Card, CardContent, Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import ListNav from "./ListNav";
 import ErrorPage from "../handlers/ErrorPage";
@@ -8,9 +8,9 @@ import CreateNewList from "./CreateNewList";
 import ListAction from "./ListAction";
 import DisplayCard from "./card/DisplayCard";
 import { useLocation } from "react-router-dom";
-import { displayListPageEP} from "../Api";
+import { displayListPageEP } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
-import {displayList } from "../../redux/ListSlice";
+import { displayList, setListError } from "../../redux/ListSlice";
 
 function ListPage() {
   const location = useLocation();
@@ -18,24 +18,21 @@ function ListPage() {
   const boardName = state?.BoardName || "Trello";
 
   const { id } = useParams();
-  // const [listData, setListData] = useState();
   const dispatch = useDispatch();
-  const {listData} =  useSelector(state => state.list)
-  // console.log("ssf", listData)
+  const { listData, isLoading, error } = useSelector((state) => state.list);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchList = async()=>{
-    const listData = await displayListPageEP(id,setIsLoading, setError);
-    dispatch(displayList(listData))
-  }
+  const fetchList = async () => {
+    try {
+      const listData = await displayListPageEP(id);
+      dispatch(displayList(listData.data));
+    } catch (error) {
+      dispatch(setListError(error.message));
+    }
+  };
 
   useEffect(() => {
-    fetchList()
+    fetchList();
   }, []);
-
-
 
   return (
     <div>
@@ -45,7 +42,7 @@ function ListPage() {
       ) : (
         <>
           {isLoading ? (
-            <LoadingPage/>
+            <LoadingPage />
           ) : (
             <Container maxWidth="2xl" className="listContainer">
               <div className="displayList">
@@ -62,9 +59,7 @@ function ListPage() {
                   </div>
                 ))}
                 <div>
-                  <CreateNewList
-                    boardId={id}
-                  />
+                  <CreateNewList boardId={id} />
                 </div>
               </div>
             </Container>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { Card, CardContent, Typography, Container, Grid } from "@mui/material";
 import CreateNewBoard from "./CreateNewBoard";
 import LoadingPage from "../handlers/LoadingPage";
@@ -6,18 +6,22 @@ import ErrorPage from "../handlers/ErrorPage";
 import { Link } from "react-router-dom";
 import { displayBoardEP } from "../Api";
 import { useDispatch, useSelector } from "react-redux";
-import { displayBoard } from "../../redux/boardSlice";
+import { displayBoard, setError } from "../../redux/boardSlice";
 
 function DisplayBoards() {
   const dispatch = useDispatch();
-  const {boardData} = useSelector(state => state.board)
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchBoard = async()=>{
-    const data = await displayBoardEP(setIsLoading, setError);
-    dispatch(displayBoard(data))
-  }
+  const { boardData, isLoading,error } = useSelector((state) => state.board);
+ 
+  const fetchBoard = async () => {
+    try {
+      const data = await displayBoardEP();
+      dispatch(displayBoard(data.data));
+    } catch (error) {
+      // console.log(error)
+      dispatch(setError(error.message))
+      
+    }
+  };
 
   useEffect(() => {
     fetchBoard();
@@ -35,7 +39,7 @@ function DisplayBoards() {
         </Typography>
         <Grid container spacing={2}>
           <Grid item>
-            <CreateNewBoard/>
+            <CreateNewBoard />
           </Grid>
           {boardData &&
             boardData.map(({ id, name, prefs }) => {

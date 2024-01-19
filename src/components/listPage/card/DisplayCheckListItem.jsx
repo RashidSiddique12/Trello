@@ -4,7 +4,7 @@ import DeleteItem from "./DeleteItem";
 import AddItem from "./AddItem";
 import { DisplayCheckListItemEP, handleCheckBoxEP } from "../../Api";
 import { BorderLinearProgress } from "./ProgressLine";
-import LoadingElement from "../.././handlers/LoadingElement"
+import LoadingElement from "../.././handlers/LoadingElement";
 import { useDispatch, useSelector } from "react-redux";
 import {
   displayCheckListItem,
@@ -16,16 +16,17 @@ function DisplayCheckListItem({ checkListId, cardId }) {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { checkListItemData } = useSelector((state) => state.checkListItem);
 
-  // console.log("item", checkListItemData);
+  const checkListItemData = useSelector(
+    (state) => state.checkListItem.checkListItemData[checkListId]
+  );
 
   const fetchItemData = async () => {
     try {
       const itemData = await DisplayCheckListItemEP(checkListId);
-      dispatch(displayCheckListItem(itemData));
+      dispatch(displayCheckListItem({ itemData, checkListId }));
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -36,11 +37,10 @@ function DisplayCheckListItem({ checkListId, cardId }) {
   }, []);
 
   useEffect(() => {
-    const currentChecklistItem = checkListItemData.filter(
+    const currentChecklistItem = checkListItemData && checkListItemData.filter(
       (item) => item.idChecklist === checkListId
     );
-
-    if (currentChecklistItem.length > 0) {
+    if (currentChecklistItem && currentChecklistItem.length > 0) {
       const checkedNo = currentChecklistItem.filter(
         (item) => item.state === "complete"
       );
@@ -57,9 +57,9 @@ function DisplayCheckListItem({ checkListId, cardId }) {
     try {
       const res = await handleCheckBoxEP(cardId, checkItemId, checkItemstate);
       // console.log("checkbox response", res);
-      dispatch(handleCheckBox({ id: res.id, state: res.state }));
+      dispatch(handleCheckBox({ checkListId, data: res }));
     } catch (error) {
-      alert("SomeThing Went Wrong")
+      alert("SomeThing Went Wrong");
     }
   };
 
@@ -67,7 +67,7 @@ function DisplayCheckListItem({ checkListId, cardId }) {
     <div>
       <div className="progress">
         {loading ? (
-          <LoadingElement/>
+          <LoadingElement />
         ) : (
           <>
             <p>{progress}%</p>
@@ -81,21 +81,18 @@ function DisplayCheckListItem({ checkListId, cardId }) {
       </div>
       {checkListItemData &&
         checkListItemData.map((item) => {
-          if (item.idChecklist === checkListId) {
-            return (
-              <div key={item.id} className="checkListItem">
-                <FormGroup sx={{ display: "flex" }}>
-                  <FormControlLabel
-                    onClick={() => handleItemCheckBox(item.id, item.state)}
-                    control={<Checkbox checked={item.state === "complete"} />}
-                    label={item.name}
-                  />
-                </FormGroup>
-                <DeleteItem checkItemsId={item.id} checkListId={checkListId} />
-              </div>
-            );
-          }
-          return null;
+          return (
+            <div key={item.id} className="checkListItem">
+              <FormGroup sx={{ display: "flex" }}>
+                <FormControlLabel
+                  onClick={() => handleItemCheckBox(item.id, item.state)}
+                  control={<Checkbox checked={item.state === "complete"} />}
+                  label={item.name}
+                />
+              </FormGroup>
+              <DeleteItem checkItemsId={item.id} checkListId={checkListId} />
+            </div>
+          );
         })}
       <AddItem checkListId={checkListId} />
     </div>

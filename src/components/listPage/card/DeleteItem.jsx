@@ -21,7 +21,7 @@ function DeleteItem({ checkItemsId, checkListId }) {
   const DeleteCheckItem = async() => {
     const res = await DeleteCheckItemEP(checkListId, checkItemsId);
     if(res.status === 200){
-      dispatch(deleteCheckListItem(checkItemsId))
+      dispatch(deleteCheckListItem({checkItemsId, checkListId}))
     }
   };
   return (

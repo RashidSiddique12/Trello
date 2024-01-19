@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  checkListItemData: [],
-  //   newChecklist: ""
+  checkListItemData: {},
+  // newItem: "",
+  // openInput: false,
+  // loading: true,
 };
 
 export const checkListItemSlice = createSlice({
@@ -10,34 +12,58 @@ export const checkListItemSlice = createSlice({
   initialState,
   reducers: {
     displayCheckListItem: (state, action) => {
-      const uniqueNewItem = action.payload.filter(
-        (newItem) =>
-          !state.checkListItemData.some((existingItem) => existingItem.id === newItem.id)
-      );
-
+      const { itemData, checkListId } = action.payload;
+      // console.log(itemData);
       return {
         ...state,
-        checkListItemData: [...state.checkListItemData, ...uniqueNewItem],
-        // checkListItemData: [...state.checkListItemData, action.payload],
+        checkListItemData: {
+          ...state.checkListItemData,
+          [checkListId]: itemData,
+        },
       };
+  
     },
     createNewCheckListItem: (state, action) => {
-      state.checkListItemData.push(action.payload);
+      const { newItemData, checkListId } = action.payload;
+      return {
+        ...state,
+        checkListItemData: {
+          ...state.checkListItemData,
+          [checkListId]: [...state.checkListItemData[checkListId], newItemData],
+        },
+        // newItem : ""
+      };
     },
     deleteCheckListItem: (state, action) => {
-      state.checkListItemData = state.checkListItemData.filter(
-        (item) => item.id !== action.payload
+      const { checkItemsId, checkListId } = action.payload;
+      let updatedData = state.checkListItemData[checkListId].filter(
+        (ele) => ele.id != checkItemsId
       );
+      return {
+        ...state,
+        checkListItemData: {
+          ...state.checkListItemData,
+          [checkListId]: [...updatedData],
+        },
+      };
     },
     handleCheckBox: (state, action) => {
-      state.checkListItemData = state.checkListItemData.map((item) => {
-        if (item.id === action.payload.id) {
-          return { ...item, state: action.payload.state };
+      const {checkListId,data } = action.payload
+      state.checkListItemData[checkListId] = state.checkListItemData[checkListId].map((item) => {
+        if (item.id === data.id) {
+          return { ...item, state: data.state };
         } else {
           return item;
         }
       });
     },
+    // setNewItem: (state, action) => {
+    //   // console.log(action.payload);
+    //   state.newItem = action.payload;
+    // },
+    // setOpenInput: (state, action) => {
+    //   state.openInput = action.payload;
+    // },
   },
 });
 
@@ -46,6 +72,8 @@ export const {
   createNewCheckListItem,
   deleteCheckListItem,
   handleCheckBox,
+  setNewItem,
+  setOpenInput,
 } = checkListItemSlice.actions;
 
 export default checkListItemSlice.reducer;

@@ -14,10 +14,10 @@ function AddCard({ listId }) {
 
   const handleAddCard = async (e) => {
     e.preventDefault();
-    
-    const newCardData = await handleAddCardEP(listId, newCard);
-    dispatch(createNewCard(newCardData));
 
+    const newData = await handleAddCardEP(listId, newCard);
+    dispatch(createNewCard({ listId, newData }));
+    
     setOpenTextField(false);
     setNewCard("");
   };
